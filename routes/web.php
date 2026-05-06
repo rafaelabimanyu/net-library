@@ -42,3 +42,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-books', [\App\Http\Controllers\TransactionController::class, 'myBooks'])->name('user.my-books');
 
 });
+
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
