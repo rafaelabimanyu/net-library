@@ -23,10 +23,12 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        $pendingApprovalCount = DB::table('transactions')->where('status', 'pending')->count();
+
         if (auth()->user()->role === 'admin') {
             return view('admin.dashboard', compact('totalBooks', 'totalMembers', 'loansToday', 'totalFines', 'recentTransactions'));
         }
 
-        return view('petugas.dashboard', compact('totalBooks', 'totalMembers', 'loansToday', 'totalFines', 'recentTransactions'));
+        return view('petugas.dashboard', compact('totalBooks', 'totalMembers', 'loansToday', 'totalFines', 'recentTransactions', 'pendingApprovalCount'));
     }
 }

@@ -12,4 +12,10 @@ class CatalogController extends Controller
         $books = DB::table('books')->get();
         return view('catalog', compact('books'));
     }
+
+    public function adminIndex()
+    {
+        $books = DB::table('books')->get();
+        return view('admin.books.index', compact('books'));
+    }
 }

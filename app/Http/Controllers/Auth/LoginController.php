@@ -31,7 +31,7 @@ class LoginController extends Controller
                 return redirect()->intended('petugas/dashboard');
             }
 
-            return redirect()->intended('catalog');
+            return redirect()->intended('discover');
         }
 
         return back()->withErrors([
