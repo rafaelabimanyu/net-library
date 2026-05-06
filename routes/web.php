@@ -15,21 +15,16 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
     
-    // Admin Only
-    Route::middleware(['role:admin'])->prefix('admin')->group(function () {
-        Route::get('/dashboard', function () {
-            return "Admin Dashboard";
-        })->name('admin.dashboard');
-    });
-
-    // Petugas Only
-    Route::middleware(['role:petugas'])->prefix('petugas')->group(function () {
-        Route::get('/dashboard', function () {
-            return "Petugas Dashboard";
-        })->name('petugas.dashboard');
+    // Admin & Petugas Only
+    Route::middleware(['role:admin,petugas'])->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
+        
+        Route::get('/admin/transactions', [\App\Http\Controllers\TransactionController.php, 'index'])->name('admin.transactions.index');
+        Route::post('/admin/transactions/{id}/status', [\App\Http\Controllers\TransactionController::php, 'updateStatus'])->name('admin.transactions.update');
     });
 
     // Pengunjung & All Authenticated
     Route::get('/catalog', [\App\Http\Controllers\CatalogController::class, 'index'])->name('catalog');
+    Route::post('/catalog/borrow/{bookId}', [\App\Http\Controllers\TransactionController::class, 'borrow'])->name('borrow.request');
 
 });

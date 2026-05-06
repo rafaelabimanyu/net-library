@@ -49,6 +49,9 @@
             
             <div class="flex items-center gap-6">
                 <span class="text-white/60 text-sm hidden md:block">Welcome, <span class="text-sky-blue font-medium">{{ auth()->user()->name }}</span></span>
+                @if(auth()->user()->role !== 'pengunjung')
+                    <a href="{{ route('admin.dashboard') }}" class="text-xs uppercase tracking-widest text-sky-blue hover:brightness-110 transition-all">Admin Panel</a>
+                @endif
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="text-xs uppercase tracking-widest text-white/40 hover:text-white transition-colors">Logout</button>
@@ -57,8 +60,30 @@
         </div>
     </nav>
 
+    <!-- Toast Notifications -->
+    <div class="fixed top-24 right-6 z-[60] space-y-4 pointer-events-none">
+        @if(session('success'))
+            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" 
+                class="glass border-emerald-500/30 bg-emerald-500/10 text-emerald-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 pointer-events-auto animate-float">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm font-medium">{{ session('success') }}</span>
+            </div>
+        @endif
+        @if(session('error'))
+            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" 
+                class="glass border-red-500/30 bg-red-500/10 text-red-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 pointer-events-auto animate-float">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm font-medium">{{ session('error') }}</span>
+            </div>
+        @endif
+    </div>
+
     <main class="max-w-7xl mx-auto px-6 py-12">
-        <!-- Header & Search -->
+        <!-- ... existing header ... -->
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
             <div>
                 <h2 class="text-4xl font-bold mb-2">Book Catalog</h2>
@@ -109,7 +134,7 @@
                         @if($book->stok_tersedia > 0)
                             <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 backdrop-blur-md">Available</span>
                         @else
-                            <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 backdrop-blur-md">Borrowed</span>
+                            <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 backdrop-blur-md">Out of Stock</span>
                         @endif
                     </div>
                 </div>
@@ -125,11 +150,19 @@
                         <span class="text-white/20 text-[10px] uppercase tracking-tighter">Location</span>
                         <span class="text-xs font-mono text-white/60">{{ $book->rak_lokasi }}</span>
                     </div>
-                    <button class="bg-white/5 hover:bg-sky-blue hover:text-dark-navy p-2.5 rounded-xl transition-all duration-300 border border-white/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </button>
+                    
+                    @if($book->stok_tersedia > 0)
+                        <form action="{{ route('borrow.request', $book->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="bg-sky-blue text-dark-navy px-4 py-2 text-xs font-bold rounded-xl hover:brightness-110 shadow-glow transition-all">
+                                BORROW
+                            </button>
+                        </form>
+                    @else
+                        <button disabled class="bg-white/5 text-white/20 px-4 py-2 text-xs font-bold rounded-xl cursor-not-allowed">
+                            UNAVAILABLE
+                        </button>
+                    @endif
                 </div>
             </div>
             @endforeach
