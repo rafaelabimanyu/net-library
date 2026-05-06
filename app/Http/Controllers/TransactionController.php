@@ -83,4 +83,34 @@ class TransactionController extends Controller
 
         return back()->with('success', 'Transaction status updated successfully.');
     }
+
+    public function myBooks()
+    {
+        $user = Auth::user();
+        $loans = DB::table('transactions')
+            ->join('books', 'transactions.book_id', '=', 'books.id')
+            ->select('transactions.*', 'books.judul', 'books.penulis', 'books.cover_image', 'books.kategori')
+            ->where('transactions.user_id', $user->id)
+            ->orderBy('transactions.created_at', 'desc')
+            ->get();
+
+        $stats = [
+            'borrowed' => $loans->where('status', 'borrowed')->count(),
+            'total_fines' => $loans->sum('denda'),
+            'history' => $loans->where('status', 'returned')->count(),
+        ];
+
+        return view('user.my-books', compact('loans', 'stats'));
+    }
+
+    public function exportReport()
+    {
+        $transactions = DB::table('transactions')
+            ->join('users', 'transactions.user_id', '=', 'users.id')
+            ->join('books', 'transactions.book_id', '=', 'books.id')
+            ->select('transactions.*', 'users.name as user_name', 'books.judul as book_title')
+            ->get();
+
+        return view('admin.reports.transactions', compact('transactions'));
+    }
 }

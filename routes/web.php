@@ -19,12 +19,14 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,petugas'])->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
         
-        Route::get('/admin/transactions', [\App\Http\Controllers\TransactionController.php, 'index'])->name('admin.transactions.index');
-        Route::post('/admin/transactions/{id}/status', [\App\Http\Controllers\TransactionController::php, 'updateStatus'])->name('admin.transactions.update');
+        Route::get('/admin/transactions', [\App\Http\Controllers\TransactionController::class, 'index'])->name('admin.transactions.index');
+        Route::post('/admin/transactions/{id}/status', [\App\Http\Controllers\TransactionController::class, 'updateStatus'])->name('admin.transactions.update');
+        Route::get('/admin/export', [\App\Http\Controllers\TransactionController::class, 'exportReport'])->name('admin.export');
     });
 
     // Pengunjung & All Authenticated
     Route::get('/catalog', [\App\Http\Controllers\CatalogController::class, 'index'])->name('catalog');
     Route::post('/catalog/borrow/{bookId}', [\App\Http\Controllers\TransactionController::class, 'borrow'])->name('borrow.request');
+    Route::get('/my-books', [\App\Http\Controllers\TransactionController::class, 'myBooks'])->name('user.my-books');
 
 });

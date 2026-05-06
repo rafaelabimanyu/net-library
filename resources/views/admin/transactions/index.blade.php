@@ -56,6 +56,12 @@
                     <h2 class="text-3xl font-bold tracking-tight">Circulation Management</h2>
                     <p class="text-white/40 text-sm">Validate and manage book loans.</p>
                 </div>
+                <a href="{{ route('admin.export') }}" target="_blank" class="px-6 py-3 bg-white/5 hover:bg-sky-blue hover:text-dark-navy text-sky-blue font-bold rounded-2xl border border-sky-blue/20 transition-all flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 00-2 2h2m2 4h10a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Export Report
+                </a>
             </header>
 
             @if(session('success'))
