@@ -3,102 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Net-Library Antigravity</title>
+    <title>Access | Net-Library Antigravity</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        @keyframes float {
-            0% { transform: translateY(0px) translateX(0px); }
-            50% { transform: translateY(-20px) translateX(10px); }
-            100% { transform: translateY(0px) translateX(0px); }
-        }
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-delayed {
-            animation: float 8s ease-in-out infinite;
-            animation-delay: 2s;
-        }
         .glass {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            text-shadow: 0 0 20px rgba(130, 200, 229, 0.5);
+        }
+        .shadow-neon {
+            box-shadow: 0 0 30px rgba(130, 200, 229, 0.3);
         }
     </style>
 </head>
-<body class="bg-dark-navy min-h-screen flex items-center justify-center overflow-hidden font-sans">
+<body class="bg-[#0a0a0c] min-h-screen flex items-center justify-center overflow-hidden font-sans selection:bg-sky-blue/30">
     
-    <!-- Background Decorative Elements -->
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-sky-blue/20 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-sky-blue/10 rounded-full blur-[100px] animate-pulse" style="animation-delay: 3s;"></div>
-        
-        <!-- Floating Antigravity Elements -->
-        <div class="absolute top-[20%] right-[15%] w-12 h-12 bg-sky-blue/30 rounded-full blur-xl animate-float"></div>
-        <div class="absolute bottom-[25%] left-[20%] w-8 h-8 bg-sky-blue/20 rounded-full blur-lg animate-float-delayed"></div>
-        <div class="absolute top-[60%] right-[25%] w-4 h-4 bg-white/10 rounded-full blur-md animate-float" style="animation-delay: 1s;"></div>
+    <!-- Background Decor -->
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-sky-blue/10 rounded-full blur-[180px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-sky-blue/5 rounded-full blur-[150px] animate-pulse" style="animation-delay: 3s;"></div>
     </div>
 
-    <div class="w-full max-w-md p-6 relative">
-        <!-- Login Card -->
-        <div class="glass rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-            <!-- Glow Effect -->
-            <div class="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-sky-blue/20 rounded-full blur-3xl"></div>
-            
-            <div class="relative z-10">
-                <div class="text-center mb-10">
-                    <h1 class="text-3xl font-bold text-white mb-2 tracking-tight">Net-Library</h1>
-                    <p class="text-sky-blue/60 text-sm font-light uppercase tracking-[0.2em]">Antigravity Access</p>
-                </div>
-
-                <form action="{{ route('login') }}" method="POST" class="space-y-6">
-                    @csrf
-                    <div>
-                        <label for="email" class="block text-xs font-medium text-sky-blue/70 mb-2 uppercase tracking-wider">Email Address</label>
-                        <input type="email" name="email" id="email" required 
-                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-sky-blue/50 focus:border-sky-blue/50 transition-all duration-300"
-                            placeholder="name@example.com">
-                        @error('email')
-                            <p class="text-red-400 text-xs mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label for="password" class="block text-xs font-medium text-sky-blue/70 mb-2 uppercase tracking-wider">Password</label>
-                        <input type="password" name="password" id="password" required 
-                            class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-sky-blue/50 focus:border-sky-blue/50 transition-all duration-300"
-                            placeholder="••••••••">
-                        @error('password')
-                            <p class="text-red-400 text-xs mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <div class="flex items-center justify-between text-xs">
-                        <label class="flex items-center text-white/50 cursor-pointer hover:text-white transition-colors">
-                            <input type="checkbox" name="remember" class="mr-2 rounded border-white/10 bg-white/5 text-sky-blue focus:ring-sky-blue/30">
-                            <span>Remember me</span>
-                        </label>
-                        <a href="#" class="text-sky-blue/70 hover:text-sky-blue transition-colors">Forgot Password?</a>
-                    </div>
-
-                    <button type="submit" 
-                        class="w-full bg-sky-blue text-dark-navy font-bold py-3.5 rounded-xl shadow-glow hover:translate-y-[-2px] hover:brightness-110 active:translate-y-[0px] transition-all duration-300">
-                        SIGN IN
-                    </button>
-                </form>
-
-                <div class="mt-8 pt-8 border-t border-white/5 text-center">
-                    <p class="text-white/40 text-xs">
-                        Need access? <a href="#" class="text-sky-blue/70 hover:text-sky-blue font-medium transition-colors">Contact Administrator</a>
-                    </p>
-                </div>
+    <div class="w-full max-w-[450px] p-10 relative">
+        <!-- Brand -->
+        <div class="text-center mb-16">
+            <div class="w-14 h-14 bg-sky-blue rounded-2xl shadow-neon flex items-center justify-center mx-auto mb-6">
+                <span class="text-dark-navy font-black text-2xl">N</span>
             </div>
+            <h1 class="text-4xl font-black tracking-tighter mb-2">NET-LIBRARY</h1>
+            <p class="text-white/20 text-[10px] font-black uppercase tracking-[0.6em]">System Authentication</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="glass rounded-[3rem] p-12 shadow-2xl relative overflow-hidden">
+            <!-- Subtle pendaran -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-sky-blue/10 rounded-full blur-[60px] -z-10"></div>
+            
+            <form action="{{ route('login') }}" method="POST" class="space-y-8">
+                @csrf
+                <div class="space-y-4">
+                    <label for="email" class="block text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-4">Credential Identity</label>
+                    <input type="email" name="email" id="email" required 
+                        class="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-5 text-white placeholder-white/10 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all duration-500 font-medium"
+                        placeholder="identity@netlib.com">
+                    @error('email')
+                        <p class="text-red-400 text-xs mt-2 ml-4 font-light italic">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="space-y-4">
+                    <label for="password" class="block text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-4">Access Key</label>
+                    <input type="password" name="password" id="password" required 
+                        class="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-5 text-white placeholder-white/10 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all duration-500 font-medium"
+                        placeholder="••••••••">
+                </div>
+
+                <div class="flex items-center justify-between px-4">
+                    <label class="flex items-center gap-3 text-[10px] text-white/30 cursor-pointer hover:text-white transition-colors group uppercase font-bold tracking-widest">
+                        <input type="checkbox" name="remember" class="w-4 h-4 rounded-lg border-white/10 bg-white/5 text-sky-blue focus:ring-sky-blue/30 focus:ring-offset-0 transition-all">
+                        <span>Persist Session</span>
+                    </label>
+                    <a href="#" class="text-[10px] font-bold text-sky-blue/40 hover:text-sky-blue transition-colors uppercase tracking-widest">Recovery</a>
+                </div>
+
+                <button type="submit" 
+                    class="w-full bg-sky-blue text-dark-navy font-black py-6 rounded-[2rem] shadow-neon hover:scale-[1.02] hover:brightness-110 active:scale-95 transition-all duration-500 uppercase tracking-[0.2em] text-xs">
+                    INITIATE ACCESS
+                </button>
+            </form>
         </div>
         
-        <!-- Decorative Text Footer -->
-        <div class="mt-8 text-center">
-            <span class="text-[10px] text-white/20 uppercase tracking-[0.4em] font-light">Precision Engineering &bull; Modern Library Systems</span>
+        <!-- Footer -->
+        <div class="mt-16 text-center">
+            <a href="{{ route('catalog') }}" class="text-[10px] text-white/20 hover:text-sky-blue uppercase tracking-[0.4em] font-light transition-all">
+                &larr; Back to Landing Page
+            </a>
         </div>
     </div>
 

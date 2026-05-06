@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Net-Library Antigravity</title>
+    <title>Petugas Dashboard | Net-Library Antigravity</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
@@ -41,23 +41,23 @@
             </div>
 
             <nav class="space-y-3 flex-grow">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-4 px-6 py-4 rounded-2xl bg-sky-blue/10 text-sky-blue font-bold transition-all">
+                <a href="{{ route('petugas.dashboard') }}" class="flex items-center gap-4 px-6 py-4 rounded-2xl bg-sky-blue/10 text-sky-blue font-bold transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                     </svg>
-                    Command Center
+                    Overview
                 </a>
                 <a href="{{ route('admin.transactions.index') }}" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-white/40 hover:text-white hover:bg-white/5 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                     </svg>
-                    Transactions
+                    Circulation
                 </a>
                 <a href="{{ route('catalog') }}" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-white/40 hover:text-white hover:bg-white/5 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
-                    Repository
+                    Inventory
                 </a>
             </nav>
 
@@ -71,8 +71,8 @@
         <main class="flex-grow p-12">
             <header class="flex justify-between items-center mb-16">
                 <div>
-                    <h2 class="text-4xl font-black tracking-tighter mb-2">Administrator</h2>
-                    <p class="text-white/30 font-light">System overview and strategic management.</p>
+                    <h2 class="text-4xl font-black tracking-tighter mb-2">Petugas Panel</h2>
+                    <p class="text-white/30 font-light">Managing the flow of knowledge with <span class="text-sky-blue font-medium">Antigravity</span>.</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="px-6 py-3 glass rounded-2xl text-xs font-bold text-white/50 border border-white/5 uppercase tracking-widest">
@@ -82,14 +82,14 @@
             </header>
 
             <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
                 <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-                    <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Total Assets</p>
+                    <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Daily Loans</p>
                     <div class="flex items-end justify-between">
-                        <h3 class="text-4xl font-black">{{ $totalBooks }}</h3>
+                        <h3 class="text-5xl font-black">{{ $loansToday }}</h3>
                         <div class="p-4 bg-sky-blue/10 rounded-2xl text-sky-blue neon-glow">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                     </div>
@@ -98,9 +98,9 @@
                 <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
                     <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Active Members</p>
                     <div class="flex items-end justify-between">
-                        <h3 class="text-4xl font-black">{{ $totalMembers }}</h3>
+                        <h3 class="text-5xl font-black">{{ $totalMembers }}</h3>
                         <div class="p-4 bg-emerald-500/10 rounded-2xl text-emerald-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
                         </div>
@@ -108,93 +108,54 @@
                 </div>
 
                 <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-                    <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Daily Loans</p>
+                    <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Total Books</p>
                     <div class="flex items-end justify-between">
-                        <h3 class="text-4xl font-black">{{ $loansToday }}</h3>
+                        <h3 class="text-5xl font-black">{{ $totalBooks }}</h3>
                         <div class="p-4 bg-amber-500/10 rounded-2xl text-amber-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-                    <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Accumulated Fines</p>
-                    <div class="flex items-end justify-between">
-                        <h3 class="text-3xl font-black">Rp{{ number_format($totalFines, 0, ',', '.') }}</h3>
-                        <div class="p-4 bg-red-500/10 rounded-2xl text-red-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 glass rounded-[3rem] p-10">
-                    <div class="flex items-center justify-between mb-10">
-                        <h4 class="text-xl font-bold tracking-tight">Circulation Dynamics</h4>
-                    </div>
-                    <div class="h-72">
-                        <canvas id="circulationChart"></canvas>
-                    </div>
+            <!-- Recent Requests -->
+            <div class="glass rounded-[3rem] p-10">
+                <div class="flex items-center justify-between mb-10">
+                    <h4 class="text-xl font-bold tracking-tight">Pending Borrow Requests</h4>
+                    <a href="{{ route('admin.transactions.index') }}" class="text-xs font-bold text-sky-blue hover:brightness-110 transition-all uppercase tracking-widest">View All</a>
                 </div>
-
-                <div class="glass rounded-[3rem] p-10">
-                    <h4 class="text-xl font-bold tracking-tight mb-10">Recent Logs</h4>
-                    <div class="space-y-8">
-                        @foreach($recentTransactions as $tx)
-                        <div class="flex items-start gap-4">
-                            <div class="w-1.5 h-1.5 rounded-full mt-2 {{ $tx->status === 'pending' ? 'bg-amber-400' : ($tx->status === 'borrowed' ? 'bg-sky-blue' : 'bg-emerald-400') }}"></div>
+                
+                <div class="space-y-6">
+                    @forelse($recentTransactions->where('status', 'pending') as $tx)
+                    <div class="flex items-center justify-between p-6 glass rounded-2xl hover:bg-white/5 transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-sky-blue/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
                             <div>
-                                <p class="text-sm text-white/80 font-medium leading-relaxed">{{ $tx->user_name }} requested {{ $tx->book_title }}</p>
-                                <span class="text-[10px] text-white/20 uppercase tracking-widest">{{ \Carbon\Carbon::parse($tx->created_at)->diffForHumans() }}</span>
+                                <p class="font-bold text-white/90">{{ $tx->user_name }}</p>
+                                <p class="text-xs text-white/30 font-light">{{ $tx->book_title }}</p>
                             </div>
                         </div>
-                        @endforeach
+                        <div class="flex gap-4">
+                            <form action="{{ route('admin.transactions.update', $tx->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="status" value="borrowed">
+                                <button class="px-6 py-2.5 bg-sky-blue text-dark-navy text-[10px] font-black rounded-xl neon-glow hover:scale-105 transition-all uppercase tracking-widest">Approve</button>
+                            </form>
+                        </div>
                     </div>
+                    @empty
+                    <div class="py-10 text-center text-white/20 font-light italic">No pending requests at the moment.</div>
+                    @endforelse
                 </div>
             </div>
         </main>
     </div>
 
-    <script>
-        const ctx = document.getElementById('circulationChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Loans',
-                    data: [12, 19, 3, 5, 2, 3, 9],
-                    borderColor: '#82c8e5',
-                    backgroundColor: 'rgba(130, 200, 229, 0.05)',
-                    borderWidth: 4,
-                    pointRadius: 0,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(255, 255, 255, 0.03)' },
-                        ticks: { color: 'rgba(255, 255, 255, 0.2)', font: { size: 10 } }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: 'rgba(255, 255, 255, 0.2)', font: { size: 10 } }
-                    }
-                }
-            }
-        });
-    </script>
 </body>
 </html>

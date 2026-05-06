@@ -17,7 +17,9 @@ Route::middleware(['auth'])->group(function () {
     
     // Admin & Petugas Only
     Route::middleware(['role:admin,petugas'])->group(function () {
-        Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/admin/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/petugas/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('petugas.dashboard');
         
         Route::get('/admin/transactions', [\App\Http\Controllers\TransactionController::class, 'index'])->name('admin.transactions.index');
         Route::post('/admin/transactions/{id}/status', [\App\Http\Controllers\TransactionController::class, 'updateStatus'])->name('admin.transactions.update');

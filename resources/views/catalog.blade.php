@@ -6,104 +6,90 @@
     <title>Catalog | Net-Library Antigravity</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        .animate-float {
-            animation: float 4s ease-in-out infinite;
-        }
         .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(130, 200, 229, 0.3);
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(130, 200, 229, 0.3);
+        }
+        .card-hover:hover {
             transform: translateY(-8px);
-            box-shadow: 0 0 30px rgba(130, 200, 229, 0.15);
+            border-color: rgba(130, 200, 229, 0.4);
+            box-shadow: 0 0 40px rgba(130, 200, 229, 0.1);
         }
     </style>
 </head>
-<body class="bg-dark-navy min-h-screen text-white font-sans selection:bg-sky-blue/30">
+<body class="bg-[#0a0a0c] min-h-screen text-white font-sans selection:bg-sky-blue/30 overflow-x-hidden">
     
     <!-- Background Decor -->
-    <div class="fixed inset-0 -z-10 overflow-hidden">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-blue/10 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-sky-blue/5 rounded-full blur-[100px]"></div>
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-sky-blue/5 rounded-full blur-[150px]"></div>
     </div>
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 glass border-b border-white/5 px-6 py-4">
+    <nav class="sticky top-0 z-50 glass border-b border-white/5 px-10 py-6">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-sky-blue rounded-lg shadow-glow flex items-center justify-center">
-                    <span class="text-dark-navy font-bold text-xl">N</span>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-blue rounded-xl neon-glow flex items-center justify-center">
+                    <span class="text-dark-navy font-black text-xl">N</span>
                 </div>
-                <h1 class="text-xl font-bold tracking-tight">Net-Library</h1>
+                <h1 class="text-2xl font-black tracking-tighter">NET-LIBRARY</h1>
             </div>
             
-            <div class="flex items-center gap-6">
-                <span class="text-white/60 text-sm hidden md:block">Welcome, <span class="text-sky-blue font-medium">{{ auth()->user()->name }}</span></span>
-                @if(auth()->user()->role !== 'pengunjung')
-                    <a href="{{ route('admin.dashboard') }}" class="text-xs uppercase tracking-widest text-sky-blue hover:brightness-110 transition-all">Admin Panel</a>
-                @endif
+            <div class="flex items-center gap-10">
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="{{ route('user.my-books') }}" class="text-sm font-medium text-white/40 hover:text-white transition-colors">My Library</a>
+                    @if(auth()->user()->role !== 'pengunjung')
+                        <a href="{{ route('admin.dashboard') }}" class="text-xs font-black uppercase tracking-widest text-sky-blue neon-glow">Admin Panel</a>
+                    @endif
+                </div>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="text-xs uppercase tracking-widest text-white/40 hover:text-white transition-colors">Logout</button>
+                    <button type="submit" class="text-xs font-bold uppercase tracking-[0.3em] text-white/20 hover:text-red-400 transition-colors">Sign Out</button>
                 </form>
             </div>
         </div>
     </nav>
 
     <!-- Toast Notifications -->
-    <div class="fixed top-24 right-6 z-[60] space-y-4 pointer-events-none">
+    <div class="fixed top-28 right-10 z-[60] space-y-4 pointer-events-none">
         @if(session('success'))
             <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" 
-                class="glass border-emerald-500/30 bg-emerald-500/10 text-emerald-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 pointer-events-auto animate-float">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                class="glass bg-emerald-500/10 border-emerald-500/20 text-emerald-400 px-8 py-5 rounded-[2rem] shadow-2xl flex items-center gap-4 pointer-events-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-sm font-medium">{{ session('success') }}</span>
-            </div>
-        @endif
-        @if(session('error'))
-            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" 
-                class="glass border-red-500/30 bg-red-500/10 text-red-400 px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 pointer-events-auto animate-float">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="text-sm font-medium">{{ session('error') }}</span>
+                <span class="text-sm font-bold tracking-tight">{{ session('success') }}</span>
             </div>
         @endif
     </div>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
-        <!-- ... existing header ... -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-            <div>
-                <h2 class="text-4xl font-bold mb-2">Book Catalog</h2>
-                <p class="text-white/50">Explore our futuristic collection of digital and physical assets.</p>
+    <main class="max-w-7xl mx-auto px-10 py-20">
+        <!-- Header & Search -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24">
+            <div class="max-w-xl">
+                <h2 class="text-6xl font-black tracking-tighter mb-6 leading-[0.9]">Explore <br><span class="text-sky-blue neon-glow">Knowledge</span></h2>
+                <p class="text-white/30 font-light text-lg">Access our high-performance repository of physical and digital assets curated for the next generation.</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
                 <!-- Search Bar -->
-                <div class="relative group">
-                    <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-white/30 group-focus-within:text-sky-blue transition-colors">
+                <div class="relative group flex-grow lg:flex-grow-0">
+                    <div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-white/20 group-focus-within:text-sky-blue transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <input type="text" x-model="search" placeholder="Search title or author..." 
-                        class="w-full sm:w-80 bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-sky-blue/50 focus:border-sky-blue/50 transition-all placeholder:text-white/20">
+                    <input type="text" x-model="search" placeholder="Search by title or author..." 
+                        class="w-full sm:w-96 bg-white/5 border border-white/10 rounded-[2rem] pl-16 pr-8 py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all placeholder:text-white/10 text-white font-medium">
                 </div>
 
                 <!-- Category Filter -->
-                <select x-model="category" class="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-sky-blue/50 text-white/70 appearance-none cursor-pointer min-w-[140px]">
+                <select x-model="category" class="bg-white/5 border border-white/10 rounded-[2rem] px-8 py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 text-white/50 appearance-none cursor-pointer min-w-[200px] font-bold text-xs uppercase tracking-widest">
                     <option value="All">All Categories</option>
                     @foreach($books->pluck('kategori')->unique() as $cat)
                         <option value="{{ $cat }}">{{ $cat }}</option>
@@ -113,54 +99,54 @@
         </div>
 
         <!-- Book Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
             @foreach($books as $book)
             <div x-show="(category === 'All' || '{{ $book->kategori }}' === category) && ('{{ strtolower($book->judul) }}'.includes(search.toLowerCase()) || '{{ strtolower($book->penulis) }}'.includes(search.toLowerCase()))"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 scale-95"
-                 x-transition:enter-end="opacity-100 scale-100"
-                 class="glass-card glass rounded-[2rem] p-6 transition-all duration-500 group flex flex-col h-full">
+                 x-transition:enter="transition ease-out duration-500"
+                 x-transition:enter-start="opacity-0 scale-90 translate-y-10"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 class="card-hover glass rounded-[3rem] p-8 transition-all duration-500 flex flex-col h-full group">
                 
                 <!-- Book Cover Placeholder -->
-                <div class="aspect-[3/4] rounded-2xl bg-white/5 mb-6 overflow-hidden relative group-hover:shadow-glow transition-all duration-500">
-                    <div class="absolute inset-0 flex items-center justify-center text-white/10 group-hover:text-sky-blue/20 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                <div class="aspect-[3/4] rounded-[2rem] bg-white/5 mb-8 overflow-hidden relative transition-all duration-700">
+                    <div class="absolute inset-0 flex items-center justify-center text-white/5 group-hover:text-sky-blue/10 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
                     
                     <!-- Availability Badge -->
-                    <div class="absolute top-4 right-4">
+                    <div class="absolute top-6 right-6">
                         @if($book->stok_tersedia > 0)
-                            <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 backdrop-blur-md">Available</span>
+                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 backdrop-blur-xl">In Stock</span>
                         @else
-                            <span class="px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest bg-red-500/10 text-red-400 border border-red-500/20 backdrop-blur-md">Out of Stock</span>
+                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/10 text-red-400 border border-red-500/20 backdrop-blur-xl">Unavailable</span>
                         @endif
                     </div>
                 </div>
 
-                <div class="flex-grow">
-                    <span class="text-sky-blue/60 text-[10px] font-bold uppercase tracking-widest mb-2 block">{{ $book->kategori }}</span>
-                    <h3 class="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-sky-blue transition-colors">{{ $book->judul }}</h3>
-                    <p class="text-white/40 text-sm font-light mb-4">{{ $book->penulis }}</p>
+                <div class="flex-grow mb-8">
+                    <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">{{ $book->kategori }}</span>
+                    <h3 class="text-2xl font-black mb-2 line-clamp-2 tracking-tighter leading-[1.1] group-hover:text-sky-blue transition-colors">{{ $book->judul }}</h3>
+                    <p class="text-white/20 text-sm font-light italic">{{ $book->penulis }}</p>
                 </div>
 
-                <div class="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
+                <div class="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
                     <div class="flex flex-col">
-                        <span class="text-white/20 text-[10px] uppercase tracking-tighter">Location</span>
-                        <span class="text-xs font-mono text-white/60">{{ $book->rak_lokasi }}</span>
+                        <span class="text-white/10 text-[10px] uppercase font-black tracking-widest">Zone</span>
+                        <span class="text-xs font-mono text-white/40 tracking-widest">{{ $book->rak_lokasi }}</span>
                     </div>
                     
                     @if($book->stok_tersedia > 0)
                         <form action="{{ route('borrow.request', $book->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="bg-sky-blue text-dark-navy px-4 py-2 text-xs font-bold rounded-xl hover:brightness-110 shadow-glow transition-all">
-                                BORROW
+                            <button type="submit" class="bg-sky-blue text-dark-navy px-8 py-3 text-[10px] font-black rounded-2xl neon-glow hover:scale-110 active:scale-95 transition-all uppercase tracking-widest">
+                                ACCESS
                             </button>
                         </form>
                     @else
-                        <button disabled class="bg-white/5 text-white/20 px-4 py-2 text-xs font-bold rounded-xl cursor-not-allowed">
-                            UNAVAILABLE
+                        <button disabled class="bg-white/5 text-white/10 px-8 py-3 text-[10px] font-black rounded-2xl cursor-not-allowed uppercase tracking-widest">
+                            LOCKED
                         </button>
                     @endif
                 </div>
@@ -169,14 +155,19 @@
         </div>
 
         <!-- Empty State -->
-        <div x-show="document.querySelectorAll('.glass-card[style*=\'display: block\']').length === 0" 
-             class="py-20 text-center">
-            <p class="text-white/20 text-lg">No books found matching your criteria.</p>
+        <div x-show="document.querySelectorAll('.card-hover[style*=\'display: block\']').length === 0" 
+             class="py-40 text-center">
+            <div class="inline-block p-10 glass rounded-[3rem] mb-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-white/10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <p class="text-white/20 text-xl font-light tracking-widest uppercase">No assets found in current grid.</p>
         </div>
     </main>
 
-    <footer class="py-12 border-t border-white/5 mt-20 text-center">
-        <p class="text-white/20 text-[10px] uppercase tracking-[0.5em] font-light">&copy; 2026 Net-Library &bull; Antigravity Experience</p>
+    <footer class="py-20 border-t border-white/5 mt-40 text-center">
+        <p class="text-white/10 text-[10px] uppercase tracking-[0.8em] font-light">&copy; 2026 Net-Library &bull; Antigravity Experience</p>
     </footer>
 
 </body>

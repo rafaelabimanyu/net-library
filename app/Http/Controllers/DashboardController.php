@@ -23,6 +23,10 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('admin.dashboard', compact('totalBooks', 'totalMembers', 'loansToday', 'totalFines', 'recentTransactions'));
+        if (auth()->user()->role === 'admin') {
+            return view('admin.dashboard', compact('totalBooks', 'totalMembers', 'loansToday', 'totalFines', 'recentTransactions'));
+        }
+
+        return view('petugas.dashboard', compact('totalBooks', 'totalMembers', 'loansToday', 'totalFines', 'recentTransactions'));
     }
 }
