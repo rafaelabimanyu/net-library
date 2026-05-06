@@ -30,8 +30,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Pengunjung & All Authenticated
-    Route::get('/catalog', function () {
-        return "Book Catalog";
-    })->name('catalog');
+    Route::get('/catalog', [\App\Http\Controllers\CatalogController::class, 'index'])->name('catalog');
 
 });
