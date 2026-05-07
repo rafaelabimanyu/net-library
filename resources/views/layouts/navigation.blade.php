@@ -69,10 +69,23 @@ class="fixed top-0 left-0 right-0 z-50 px-10 transition-all duration-500 bg-tran
                 </button>
 
                 @auth
-                <form action="{{ route('logout') }}" method="POST" class="ml-2">
-                    @csrf
-                    <button type="submit" class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-white/20 hover:text-red-400 transition-colors">{{ __('Sign Out') }}</button>
-                </form>
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('profile.show') }}" class="w-8 h-8 rounded-full border border-sky-blue/30 overflow-hidden hover:shadow-glow transition-all">
+                        @if(Auth::user()->avatar)
+                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="w-full h-full object-cover">
+                        @else
+                            <div class="w-full h-full bg-sky-blue/10 flex items-center justify-center text-sky-blue">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                        @endif
+                    </a>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-white/20 hover:text-red-400 transition-colors">{{ __('Sign Out') }}</button>
+                    </form>
+                </div>
                 @else
                 <a href="{{ route('login') }}" class="text-[10px] font-black uppercase tracking-[0.2em] text-sky-blue hover:neon-text transition-all">Login</a>
                 @endauth

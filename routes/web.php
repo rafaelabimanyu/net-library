@@ -41,11 +41,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/catalog/borrow/{bookId}', [\App\Http\Controllers\TransactionController::class, 'borrow'])->name('borrow.request');
     Route::get('/my-books', [\App\Http\Controllers\TransactionController::class, 'myBooks'])->name('user.my-books');
 
+    // Profile Management
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Book Reviews
+    Route::post('/books/{bookId}/review', [\App\Http\Controllers\BookReviewController::class, 'store'])->name('books.review');
+
 });
 
 Route::get('lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'id'])) {
-        session(['locale' => $locale]);
+        session()->put('locale', $locale);
+        session()->save();
     }
     return redirect()->back();
 })->name('lang.switch');

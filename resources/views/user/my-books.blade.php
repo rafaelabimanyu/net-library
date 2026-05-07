@@ -26,7 +26,7 @@
         </div>
 
         <!-- Books List -->
-        <div class="space-y-10">
+        <div x-data="{ reviewModal: false, selectedBook: null }" class="space-y-10">
             <h3 class="text-2xl font-black tracking-tighter mb-10 text-dark-navy dark:text-white">Active & Pending Streams</h3>
             @forelse($loans->whereIn('status', ['borrowed', 'pending']) as $loan)
                 <div class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-10 flex flex-col lg:flex-row items-center gap-10 group hover:bg-sky-blue/10 dark:hover:bg-white/5 transition-all duration-500">
@@ -50,9 +50,9 @@
                         
                         @if($loan->status === 'borrowed')
                             @php
-                                $due = \Carbon\Carbon::parse($loan->tgl_kembali_seharusnya);
-                                $now = now();
-                                $days = $now->diffInDays($due, false);
+                                $due = \Carbon\Carbon::parse($loan->tgl_kembali_seharusnya)->startOfDay();
+                                $now = now()->startOfDay();
+                                $days = (int) $now->diffInDays($due, false);
                             @endphp
                             <div class="flex items-center gap-6">
                                 <div class="flex-grow bg-gray-100 dark:bg-white/5 h-2 rounded-full overflow-hidden">
@@ -60,14 +60,18 @@
                                 </div>
                                 <span class="text-xs font-black uppercase tracking-widest {{ $days < 0 ? 'text-red-500' : ($days <= 2 ? 'text-amber-500' : 'text-gray-400 dark:text-white/30') }}">
                                     @if($days < 0)
-                                        Overdue {{ abs($days) }}D
+                                        {{ __('Overdue') }} {{ abs($days) }}D
                                     @elseif($days == 0)
-                                        Final Day
+                                        {{ __('Final Day') }}
                                     @else
-                                        {{ $days }}D Remaining
+                                        {{ $days }}D {{ __('Remaining') }}
                                     @endif
                                 </span>
                             </div>
+
+                            <button @click="reviewModal = true; selectedBook = { id: {{ $loan->book_id }}, title: '{{ addslashes($loan->judul) }}' }" class="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-sky-blue hover:neon-text transition-all">
+                                Write a Review
+                            </button>
                         @endif
                     </div>
 
@@ -90,6 +94,7 @@
                             <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">Resource</th>
                             <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">Closed On</th>
                             <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">Adjustment</th>
+                            <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-white/5">
@@ -111,11 +116,56 @@
                                     @endif
                                 </span>
                             </td>
+                            <td class="px-10 py-8 text-right">
+                                <button @click="reviewModal = true; selectedBook = { id: {{ $history->book_id }}, title: '{{ addslashes($history->judul) }}' }" class="text-[10px] font-black uppercase tracking-[0.3em] text-sky-blue hover:neon-text transition-all">
+                                    Review
+                                </button>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
+            <!-- Review Modal -->
+            <template x-if="reviewModal">
+                <div class="fixed inset-0 z-[100] flex items-center justify-center p-10">
+                    <div @click="reviewModal = false" class="absolute inset-0 bg-dark-navy/80 backdrop-blur-sm"></div>
+                    <div x-data="{ hoverRating: 0, selectedRating: 0 }" class="relative w-full max-w-xl bg-white dark:bg-dark-navy border border-sky-blue/20 rounded-[3rem] p-12 shadow-2xl animate-in zoom-in-95 duration-300">
+                        <h3 class="text-3xl font-black text-dark-navy dark:text-white mb-2 tracking-tighter">Share Experience</h3>
+                        <p class="text-gray-400 dark:text-white/30 text-sm font-light mb-10 italic" x-text="selectedBook.title"></p>
+
+                        <form :action="'{{ url('/books') }}/' + selectedBook.id + '/review'" method="POST" class="space-y-10">
+                            @csrf
+                            <div>
+                                <label class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20 mb-6 block text-center">Efficiency Rating</label>
+                                <div class="flex justify-center gap-4">
+                                    <template x-for="i in 5">
+                                        <label class="cursor-pointer group">
+                                            <input type="radio" name="rating" :value="i" class="hidden" required>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 transition-all" :class="i <= (hoverRating || selectedRating) ? 'text-sky-blue drop-shadow-glow' : 'text-gray-100 dark:text-white/5'"
+                                                @mouseenter="hoverRating = i" @mouseleave="hoverRating = 0" @click="selectedRating = i"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        </label>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20 mb-4 block">Detailed Log</label>
+                                <textarea name="review" rows="4" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-2xl p-6 text-dark-navy dark:text-white focus:border-sky-blue focus:ring-0 transition-all font-medium placeholder:text-gray-300 dark:placeholder:text-white/5" placeholder="Share your insights about this asset..."></textarea>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <button type="button" @click="reviewModal = false" class="flex-grow py-5 border border-gray-100 dark:border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-all">Cancel</button>
+                                <button type="submit" class="flex-grow py-5 bg-sky-blue text-dark-navy rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] shadow-glow hover:scale-105 transition-all">Transmit Review</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </template>
         </div>
     </main>
 @endsection

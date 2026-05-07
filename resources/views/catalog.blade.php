@@ -16,7 +16,7 @@
         @endif
     </div>
 
-    <main x-data="{ search: '', category: 'All' }" class="max-w-7xl mx-auto px-10 py-10">
+    <main x-data="{ search: '', category: 'All', detailModal: false, selectedBook: null }" class="max-w-7xl mx-auto px-10 py-10">
         <!-- Header & Search -->
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24">
             <div class="max-w-xl">
@@ -58,7 +58,7 @@
                  class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-8 transition-all duration-500 flex flex-col h-full group hover:translate-y-[-8px] hover:border-sky-blue/30 hover:shadow-glow">
                 
                 <!-- Book Cover Placeholder -->
-                <div class="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-white/5 mb-8 overflow-hidden relative transition-all duration-700">
+                <div @click="detailModal = true; selectedBook = {{ json_encode($book) }}" class="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-white/5 mb-8 overflow-hidden relative transition-all duration-700 cursor-pointer">
                     <div class="absolute inset-0 flex items-center justify-center text-gray-200 dark:text-white/5 group-hover:text-sky-blue/10 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -75,8 +75,16 @@
                     </div>
                 </div>
 
-                <div class="flex-grow mb-8">
-                    <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">{{ $book->kategori }}</span>
+                <div class="flex-grow mb-8 cursor-pointer" @click="detailModal = true; selectedBook = {{ json_encode($book) }}">
+                    <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.3em] mb-2 block">{{ $book->kategori }}</span>
+                    <div class="flex items-center gap-1 mb-4">
+                        @for($i = 1; $i <= 5; $i++)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 {{ $i <= round($book->avg_rating) ? 'text-sky-blue' : 'text-gray-200 dark:text-white/10' }}" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                        @endfor
+                        <span class="text-[10px] font-bold text-gray-400 dark:text-white/20 ml-2">({{ number_format($book->avg_rating, 1) }})</span>
+                    </div>
                     <h3 class="text-2xl font-black mb-2 line-clamp-2 tracking-tighter leading-[1.1] text-dark-navy dark:text-white group-hover:text-sky-blue transition-colors">{{ $book->judul }}</h3>
                     <p class="text-gray-400 dark:text-white/20 text-sm font-light italic">{{ $book->penulis }}</p>
                 </div>
@@ -104,8 +112,82 @@
             @endforeach
         </div>
 
+        <!-- Detail Modal -->
+        <template x-if="detailModal">
+            <div class="fixed inset-0 z-[100] flex items-center justify-center p-10">
+                <div @click="detailModal = false" class="absolute inset-0 bg-dark-navy/80 backdrop-blur-sm"></div>
+                <div class="relative w-full max-w-4xl bg-white dark:bg-dark-navy border border-sky-blue/20 rounded-[4rem] p-16 shadow-2xl flex flex-col lg:flex-row gap-16 overflow-y-auto max-h-[90vh]">
+                    <!-- Left: Info -->
+                    <div class="w-full lg:w-1/3">
+                        <div class="aspect-[3/4] rounded-[3rem] bg-gray-100 dark:bg-white/5 mb-10 overflow-hidden relative">
+                             <div class="absolute inset-0 flex items-center justify-center text-gray-200 dark:text-white/5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="text-3xl font-black text-dark-navy dark:text-white tracking-tighter mb-4" x-text="selectedBook.judul"></h3>
+                        <p class="text-sky-blue text-xs font-black uppercase tracking-[0.4em] mb-6" x-text="selectedBook.penulis"></p>
+                        
+                        <div class="flex items-center gap-2 mb-10">
+                            <template x-for="i in 5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" :class="i <= Math.round(selectedBook.avg_rating) ? 'text-sky-blue shadow-glow' : 'text-gray-100 dark:text-white/5'" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                            </template>
+                            <span class="text-sm font-black text-dark-navy dark:text-white ml-2" x-text="Number(selectedBook.avg_rating).toFixed(1)"></span>
+                        </div>
+
+                        <div class="p-8 bg-sky-blue/5 border border-sky-blue/10 rounded-[2.5rem]">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-sky-blue mb-2 block">System Location</span>
+                            <p class="text-xl font-black text-dark-navy dark:text-white tracking-widest" x-text="selectedBook.rak_lokasi"></p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Reviews -->
+                    <div class="flex-grow">
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 dark:text-white/20 mb-10">Neural Impressions</h4>
+                        
+                        <div class="space-y-8">
+                            <template x-for="review in selectedBook.reviews">
+                                <div class="bg-gray-50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-gray-100 dark:border-white/5 transition-all hover:border-sky-blue/20">
+                                    <div class="flex items-center justify-between mb-6">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-full border border-sky-blue/30 overflow-hidden bg-white dark:bg-dark-navy flex items-center justify-center">
+                                                <template x-if="review.user_avatar">
+                                                    <img :src="'{{ asset('storage') }}/' + review.user_avatar" class="w-full h-full object-cover">
+                                                </template>
+                                                <template x-if="!review.user_avatar">
+                                                    <span class="text-sky-blue text-xs font-black" x-text="review.user_name.charAt(0)"></span>
+                                                </template>
+                                            </div>
+                                            <span class="text-sm font-black text-dark-navy dark:text-white" x-text="review.user_name"></span>
+                                        </div>
+                                        <div class="flex gap-0.5">
+                                            <template x-for="i in 5">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" :class="i <= review.rating ? 'text-sky-blue' : 'text-gray-200 dark:text-white/5'" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-500 dark:text-white/40 text-sm font-medium leading-relaxed" x-text="review.review"></p>
+                                </div>
+                            </template>
+
+                            <template x-if="selectedBook.reviews.length === 0">
+                                <div class="py-20 text-center border-2 border-dashed border-gray-100 dark:border-white/5 rounded-[3rem]">
+                                    <p class="text-gray-400 dark:text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">No impressions registered yet.</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
         <!-- Empty State -->
-        <div x-show="document.querySelectorAll('.group[style*=\'display: block\']').length === 0" 
+        <div x-show="document.querySelectorAll('.group').length === 0" 
              class="py-40 text-center">
             <div class="inline-block p-10 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[3rem] mb-8">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-gray-200 dark:text-white/10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
