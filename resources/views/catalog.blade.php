@@ -55,22 +55,29 @@
                  x-transition:enter="transition ease-out duration-500"
                  x-transition:enter-start="opacity-0 scale-90 translate-y-10"
                  x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                 class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-8 transition-all duration-500 flex flex-col h-full group hover:translate-y-[-8px] hover:border-sky-blue/30 hover:shadow-glow">
+                 class="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-8 transition-all duration-500 flex flex-col h-full group hover:translate-y-[-8px] hover:border-sky-blue/30 hover:shadow-glow">
                 
-                <!-- Book Cover Placeholder -->
-                <div @click="detailModal = true; selectedBook = {{ json_encode($book) }}" class="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-white/5 mb-8 overflow-hidden relative transition-all duration-700 cursor-pointer">
-                    <div class="absolute inset-0 flex items-center justify-center text-gray-200 dark:text-white/5 group-hover:text-sky-blue/10 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                    </div>
+                <!-- Book Cover -->
+                <div @click="detailModal = true; selectedBook = {{ json_encode($book) }}" class="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-white/5 mb-8 overflow-hidden relative transition-all duration-700 cursor-pointer shadow-lg group-hover:shadow-2xl">
+                    <img src="{{ $book->cover_image }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ $book->judul }}">
+                    <div class="absolute inset-0 bg-gradient-to-t from-dark-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
+                    <!-- Wishlist Button -->
+                    <form action="{{ route('wishlist.toggle', $book->id) }}" method="POST" class="absolute top-6 left-6 z-10" @click.stop>
+                        @csrf
+                        <button type="submit" class="p-3 rounded-xl backdrop-blur-xl border border-white/20 transition-all duration-300 {{ $book->is_wishlisted ? 'bg-sky-blue text-dark-navy shadow-glow' : 'bg-white/10 text-white hover:bg-white/20' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" :fill="'{{ $book->is_wishlisted ? 'currentColor' : 'none' }}'" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </form>
+
                     <!-- Availability Badge -->
                     <div class="absolute top-6 right-6">
                         @if($book->stok_tersedia > 0)
-                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 backdrop-blur-xl">{{ __('In Stock') }}</span>
+                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/80 text-white backdrop-blur-xl border border-white/20 shadow-lg">{{ __('In Stock') }}</span>
                         @else
-                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 backdrop-blur-xl">{{ __('Unavailable') }}</span>
+                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/80 text-white backdrop-blur-xl border border-white/20 shadow-lg">{{ __('Unavailable') }}</span>
                         @endif
                     </div>
                 </div>
@@ -95,18 +102,9 @@
                         <span class="text-xs font-mono text-gray-400 dark:text-white/40 tracking-widest">{{ $book->rak_lokasi }}</span>
                     </div>
                     
-                    @if($book->stok_tersedia > 0)
-                        <form action="{{ route('borrow.request', $book->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="bg-sky-blue text-dark-navy px-8 py-3 text-[10px] font-black rounded-2xl shadow-glow hover:scale-110 active:scale-95 transition-all uppercase tracking-widest">
-                                {{ __('ACCESS') }}
-                            </button>
-                        </form>
-                    @else
-                        <button disabled class="bg-gray-100 dark:bg-white/5 text-gray-300 dark:text-white/10 px-8 py-3 text-[10px] font-black rounded-2xl cursor-not-allowed uppercase tracking-widest">
-                            {{ __('LOCKED') }}
-                        </button>
-                    @endif
+                    <button @click="detailModal = true; selectedBook = {{ json_encode($book) }}" class="bg-dark-navy dark:bg-white text-white dark:text-dark-navy px-8 py-3 text-[10px] font-black rounded-2xl hover:scale-110 active:scale-95 transition-all uppercase tracking-widest">
+                        {{ __('DETAILS') }}
+                    </button>
                 </div>
             </div>
             @endforeach
@@ -114,72 +112,111 @@
 
         <!-- Detail Modal -->
         <template x-if="detailModal">
-            <div class="fixed inset-0 z-[100] flex items-center justify-center p-10">
-                <div @click="detailModal = false" class="absolute inset-0 bg-dark-navy/80 backdrop-blur-sm"></div>
-                <div class="relative w-full max-w-4xl bg-white dark:bg-dark-navy border border-sky-blue/20 rounded-[4rem] p-16 shadow-2xl flex flex-col lg:flex-row gap-16 overflow-y-auto max-h-[90vh]">
-                    <!-- Left: Info -->
-                    <div class="w-full lg:w-1/3">
-                        <div class="aspect-[3/4] rounded-[3rem] bg-gray-100 dark:bg-white/5 mb-10 overflow-hidden relative">
-                             <div class="absolute inset-0 flex items-center justify-center text-gray-200 dark:text-white/5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
+            <div class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-10">
+                <div @click="detailModal = false" class="absolute inset-0 bg-dark-navy/80 backdrop-blur-md"></div>
+                <div class="relative w-full max-w-5xl bg-white dark:bg-[#0d1117] border border-sky-blue/20 rounded-[3rem] p-8 sm:p-16 shadow-2xl flex flex-col lg:flex-row gap-12 sm:gap-16 overflow-y-auto max-h-[90vh] animate-in zoom-in-95 duration-300">
+                    <!-- Left: Cover & Actions -->
+                    <div class="w-full lg:w-1/3 flex flex-col items-center text-center">
+                        <div class="aspect-[3/4] w-full rounded-[3rem] bg-gray-100 dark:bg-white/5 mb-10 overflow-hidden relative shadow-2xl">
+                             <img :src="selectedBook.cover_image" class="w-full h-full object-cover">
+                             <div class="absolute inset-0 bg-gradient-to-t from-dark-navy/40 to-transparent"></div>
                         </div>
-                        <h3 class="text-3xl font-black text-dark-navy dark:text-white tracking-tighter mb-4" x-text="selectedBook.judul"></h3>
-                        <p class="text-sky-blue text-xs font-black uppercase tracking-[0.4em] mb-6" x-text="selectedBook.penulis"></p>
                         
-                        <div class="flex items-center gap-2 mb-10">
-                            <template x-for="i in 5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" :class="i <= Math.round(selectedBook.avg_rating) ? 'text-sky-blue shadow-glow' : 'text-gray-100 dark:text-white/5'" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
+                        <div class="w-full space-y-4">
+                            <template x-if="selectedBook.stok_tersedia > 0">
+                                <form :action="'{{ url('/catalog/borrow') }}/' + selectedBook.id" method="POST">
+                                    @csrf
+                                    <button type="submit" class="w-full bg-sky-blue text-dark-navy py-6 text-xs font-black rounded-3xl shadow-glow hover:scale-105 transition-all uppercase tracking-widest">
+                                        {{ __('BORROW NOW') }}
+                                    </button>
+                                </form>
                             </template>
-                            <span class="text-sm font-black text-dark-navy dark:text-white ml-2" x-text="Number(selectedBook.avg_rating).toFixed(1)"></span>
-                        </div>
+                            <template x-if="selectedBook.stok_tersedia <= 0">
+                                <button disabled class="w-full bg-gray-100 dark:bg-white/5 text-gray-400 dark:text-white/10 py-6 text-xs font-black rounded-3xl cursor-not-allowed uppercase tracking-widest border border-dashed border-gray-200 dark:border-white/10">
+                                    {{ __('CURRENTLY UNAVAILABLE') }}
+                                </button>
+                            </template>
 
-                        <div class="p-8 bg-sky-blue/5 border border-sky-blue/10 rounded-[2.5rem]">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-sky-blue mb-2 block">{{ __('System Location') }}</span>
-                            <p class="text-xl font-black text-dark-navy dark:text-white tracking-widest" x-text="selectedBook.rak_lokasi"></p>
+                            <form :action="'{{ url('/wishlist') }}/' + selectedBook.id" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full py-6 text-xs font-black rounded-3xl border border-gray-200 dark:border-white/10 text-gray-500 dark:text-white/60 hover:bg-gray-50 dark:hover:bg-white/5 transition-all uppercase tracking-widest flex items-center justify-center gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" :fill="selectedBook.is_wishlisted ? 'currentColor' : 'none'" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    <span x-text="selectedBook.is_wishlisted ? '{{ __('IN WISHLIST') }}' : '{{ __('ADD TO WISHLIST') }}'"></span>
+                                </button>
+                            </form>
                         </div>
                     </div>
 
-                    <!-- Right: Reviews -->
-                    <div class="flex-grow">
-                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 dark:text-white/20 mb-10">{{ __('Neural Impressions') }}</h4>
-                        
-                        <div class="space-y-8">
-                            <template x-for="review in selectedBook.reviews">
-                                <div class="bg-gray-50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-gray-100 dark:border-white/5 transition-all hover:border-sky-blue/20">
-                                    <div class="flex items-center justify-between mb-6">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-full border border-sky-blue/30 overflow-hidden bg-white dark:bg-dark-navy flex items-center justify-center">
-                                                <template x-if="review.user_avatar">
-                                                    <img :src="'{{ asset('storage') }}/' + review.user_avatar" class="w-full h-full object-cover">
-                                                </template>
-                                                <template x-if="!review.user_avatar">
-                                                    <span class="text-sky-blue text-xs font-black" x-text="review.user_name.charAt(0)"></span>
+                    <!-- Right: Info & Reviews -->
+                    <div class="flex-grow min-w-0">
+                        <header class="mb-12">
+                            <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.5em] mb-4 block" x-text="selectedBook.kategori"></span>
+                            <h3 class="text-4xl sm:text-5xl font-black text-dark-navy dark:text-white tracking-tighter mb-4 leading-tight" x-text="selectedBook.judul"></h3>
+                            <p class="text-gray-400 dark:text-white/30 text-lg font-light italic" x-text="selectedBook.penulis"></p>
+                        </header>
+
+                        <div class="mb-16">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-dark-navy dark:text-white mb-6 border-l-4 border-sky-blue pl-4">{{ __('SYNOPSIS') }}</h4>
+                            <p class="text-gray-500 dark:text-white/40 leading-relaxed text-lg" x-text="selectedBook.synopsis || 'No synopsis available for this asset.'"></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-8 mb-16">
+                            <div class="p-8 bg-gray-50 dark:bg-white/5 rounded-[2.5rem] border border-gray-100 dark:border-white/5">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-sky-blue mb-2 block">{{ __('RATING') }}</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-3xl font-black text-dark-navy dark:text-white" x-text="Number(selectedBook.avg_rating).toFixed(1)"></span>
+                                    <div class="flex gap-0.5">
+                                        <template x-for="i in 5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" :class="i <= Math.round(selectedBook.avg_rating) ? 'text-sky-blue' : 'text-gray-200 dark:text-white/10'" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-8 bg-gray-50 dark:bg-white/5 rounded-[2.5rem] border border-gray-100 dark:border-white/5">
+                                <span class="text-[10px] font-black uppercase tracking-widest text-sky-blue mb-2 block">{{ __('REPOSITORY ZONE') }}</span>
+                                <p class="text-3xl font-black text-dark-navy dark:text-white tracking-widest" x-text="selectedBook.rak_lokasi"></p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 dark:text-white/20 mb-10">{{ __('NEURAL IMPRESSIONS') }}</h4>
+                            <div class="space-y-8">
+                                <template x-for="review in selectedBook.reviews">
+                                    <div class="bg-gray-50 dark:bg-white/5 rounded-[2.5rem] p-8 border border-gray-100 dark:border-white/5 transition-all hover:border-sky-blue/20">
+                                        <div class="flex items-center justify-between mb-6">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 rounded-full border border-sky-blue/30 overflow-hidden bg-white dark:bg-dark-navy flex items-center justify-center">
+                                                    <template x-if="review.user_avatar">
+                                                        <img :src="'{{ asset('storage') }}/' + review.user_avatar" class="w-full h-full object-cover">
+                                                    </template>
+                                                    <template x-if="!review.user_avatar">
+                                                        <span class="text-sky-blue text-xs font-black" x-text="review.user_name.charAt(0)"></span>
+                                                    </template>
+                                                </div>
+                                                <span class="text-sm font-black text-dark-navy dark:text-white" x-text="review.user_name"></span>
+                                            </div>
+                                            <div class="flex gap-0.5">
+                                                <template x-for="i in 5">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" :class="i <= review.rating ? 'text-sky-blue' : 'text-gray-200 dark:text-white/5'" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                    </svg>
                                                 </template>
                                             </div>
-                                            <span class="text-sm font-black text-dark-navy dark:text-white" x-text="review.user_name"></span>
                                         </div>
-                                        <div class="flex gap-0.5">
-                                            <template x-for="i in 5">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" :class="i <= review.rating ? 'text-sky-blue' : 'text-gray-200 dark:text-white/5'" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            </template>
-                                        </div>
+                                        <p class="text-gray-500 dark:text-white/40 text-sm font-medium leading-relaxed" x-text="review.review"></p>
                                     </div>
-                                    <p class="text-gray-500 dark:text-white/40 text-sm font-medium leading-relaxed" x-text="review.review"></p>
-                                </div>
-                            </template>
+                                </template>
 
-                            <template x-if="selectedBook.reviews.length === 0">
-                                <div class="py-20 text-center border-2 border-dashed border-gray-100 dark:border-white/5 rounded-[3rem]">
-                                    <p class="text-gray-400 dark:text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">{{ __('No impressions registered yet.') }}</p>
-                                </div>
-                            </template>
+                                <template x-if="selectedBook.reviews.length === 0">
+                                    <div class="py-20 text-center border-2 border-dashed border-gray-100 dark:border-white/5 rounded-[3rem]">
+                                        <p class="text-gray-400 dark:text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">{{ __('No impressions registered yet.') }}</p>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
                     </div>
                 </div>

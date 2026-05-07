@@ -4,16 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\BookReview;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Wishlist;
 
 class CatalogController extends Controller
 {
     public function index()
     {
         $books = DB::table('books')->get();
+        $userId = Auth::id();
         
-        // Add average rating to each book
+        $wishlistedIds = [];
+        if ($userId) {
+            $wishlistedIds = Wishlist::where('user_id', $userId)->pluck('book_id')->toArray();
+        }
+
         foreach ($books as $book) {
+            $book->is_wishlisted = in_array($book->id, $wishlistedIds);
+            
             $book->avg_rating = DB::table('book_reviews')
                 ->where('book_id', $book->id)
                 ->avg('rating') ?: 0;

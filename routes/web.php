@@ -48,6 +48,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Book Reviews
     Route::post('/books/{bookId}/review', [\App\Http\Controllers\BookReviewController::class, 'store'])->name('books.review');
+    
+    // Wishlist
+    Route::post('/wishlist/{book}', [\App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
 });
 

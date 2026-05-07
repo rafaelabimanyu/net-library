@@ -25,107 +25,156 @@
             </div>
         </div>
 
-        <!-- Books List -->
-        <div x-data="{ reviewModal: false, selectedBook: null }" class="space-y-10">
-            <h3 class="text-2xl font-black tracking-tighter mb-10 text-dark-navy dark:text-white">{{ __('Active & Pending Streams') }}</h3>
-            @forelse($loans->whereIn('status', ['borrowed', 'pending']) as $loan)
-                <div class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-10 flex flex-col lg:flex-row items-center gap-10 group hover:bg-sky-blue/10 dark:hover:bg-white/5 transition-all duration-500">
-                    <!-- Icon/Cover -->
-                    <div class="w-24 h-24 bg-gray-100 dark:bg-white/5 rounded-[2rem] flex items-center justify-center text-sky-blue/20 group-hover:text-sky-blue/40 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                    </div>
-
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-4 mb-3">
-                            <h4 class="text-2xl font-black tracking-tight text-dark-navy dark:text-white transition-colors">{{ $loan->judul }}</h4>
-                            @if($loan->status === 'pending')
-                                <span class="px-3 py-1 rounded-full text-[8px] font-black bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase tracking-[0.2em]">{{ __('Pending Approval') }}</span>
-                            @else
-                                <span class="px-3 py-1 rounded-full text-[8px] font-black bg-sky-blue/10 text-sky-blue border border-sky-blue/20 uppercase tracking-[0.2em]">{{ __('Active Stream') }}</span>
-                            @endif
-                        </div>
-                        <p class="text-gray-400 dark:text-white/20 text-sm font-light italic mb-6">{{ $loan->penulis }}</p>
-                        
-                        @if($loan->status === 'borrowed')
-                            @php
-                                $due = \Carbon\Carbon::parse($loan->tgl_kembali_seharusnya)->startOfDay();
-                                $now = now()->startOfDay();
-                                $days = (int) $now->diffInDays($due, false);
-                            @endphp
-                            <div class="flex items-center gap-6">
-                                <div class="flex-grow bg-gray-100 dark:bg-white/5 h-2 rounded-full overflow-hidden">
-                                    <div class="h-full {{ $days < 0 ? 'bg-red-500' : ($days <= 2 ? 'bg-amber-400' : 'bg-sky-blue') }} shadow-glow" style="width: {{ max(0, min(100, (7 - $days) / 7 * 100)) }}%"></div>
-                                </div>
-                                <span class="text-xs font-black uppercase tracking-widest {{ $days < 0 ? 'text-red-500' : ($days <= 2 ? 'text-amber-500' : 'text-gray-400 dark:text-white/30') }}">
-                                    @if($days < 0)
-                                        {{ __('Overdue') }} {{ abs($days) }}D
-                                    @elseif($days == 0)
-                                        {{ __('Final Day') }}
-                                    @else
-                                        {{ $days }}D {{ __('Remaining') }}
-                                    @endif
-                                </span>
+        <div x-data="{ reviewModal: false, selectedBook: null }" class="space-y-32">
+            
+            <!-- Active & Pending Streams -->
+            <section>
+                <h3 class="text-2xl font-black tracking-tighter mb-10 text-dark-navy dark:text-white">{{ __('Active & Pending Streams') }}</h3>
+                <div class="space-y-10">
+                    @forelse($loans->whereIn('status', ['borrowed', 'pending']) as $loan)
+                        <div class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-10 flex flex-col lg:flex-row items-center gap-10 group hover:bg-sky-blue/10 dark:hover:bg-white/5 transition-all duration-500">
+                            <!-- Cover -->
+                            <div class="w-32 h-40 bg-gray-100 dark:bg-white/5 rounded-[2rem] overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-500">
+                                <img src="{{ $loan->cover_image }}" class="w-full h-full object-cover">
                             </div>
 
-                            <button @click="reviewModal = true; selectedBook = { id: {{ $loan->book_id }}, title: '{{ addslashes($loan->judul) }}' }" class="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-sky-blue hover:neon-text transition-all">
-                                {{ __('Write a Review') }}
-                            </button>
-                        @endif
-                    </div>
-
-                    <div class="text-right">
-                        <span class="text-[10px] text-gray-300 dark:text-white/10 uppercase font-black tracking-[0.3em] block mb-2">{{ __('Return Sync') }}</span>
-                        <span class="text-lg font-black text-gray-400 dark:text-white/40 tracking-tighter">{{ \Carbon\Carbon::parse($loan->tgl_kembali_seharusnya)->format('d.m.Y') }}</span>
-                    </div>
-                </div>
-            @empty
-                <div class="py-20 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[3rem] text-center">
-                    <p class="text-gray-400 dark:text-white/10 text-xs font-black uppercase tracking-[0.5em]">{{ __('No active asset streams detected.') }}</p>
-                </div>
-            @endforelse
-
-            <h3 class="text-2xl font-black tracking-tighter mb-10 pt-20 text-dark-navy dark:text-white">{{ __('Archive Logs') }}</h3>
-            <div class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[3rem] overflow-hidden">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-gray-100/50 dark:bg-white/5">
-                            <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">{{ __('Resource') }}</th>
-                            <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">{{ __('Closed On') }}</th>
-                            <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">{{ __('Adjustment') }}</th>
-                            <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20">{{ __('Action') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-white/5">
-                        @foreach($loans->where('status', 'returned') as $history)
-                        <tr class="hover:bg-gray-50 dark:hover:bg-white/2 transition-colors">
-                            <td class="px-10 py-8">
-                                <p class="font-black text-lg tracking-tight text-dark-navy dark:text-white">{{ $history->judul }}</p>
-                                <span class="text-[10px] text-gray-400 dark:text-white/20 italic">{{ $history->penulis }}</span>
-                            </td>
-                            <td class="px-10 py-8 text-sm text-gray-400 dark:text-white/40 font-mono">
-                                {{ \Carbon\Carbon::parse($history->tgl_pengembalian_aktual)->format('d.m.Y') }}
-                            </td>
-                            <td class="px-10 py-8">
-                                <span class="text-sm font-black {{ $history->denda > 0 ? 'text-red-500' : 'text-emerald-500 dark:text-emerald-400' }}">
-                                    @if($history->denda > 0)
-                                        +Rp{{ number_format($history->denda, 0, ',', '.') }}
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-4 mb-3">
+                                    <h4 class="text-2xl font-black tracking-tight text-dark-navy dark:text-white transition-colors">{{ $loan->judul }}</h4>
+                                    @if($loan->status === 'pending')
+                                        <span class="px-3 py-1 rounded-full text-[8px] font-black bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase tracking-[0.2em]">{{ __('Pending Approval') }}</span>
                                     @else
-                                        {{ __('SUCCESS') }}
+                                        <span class="px-3 py-1 rounded-full text-[8px] font-black bg-sky-blue/10 text-sky-blue border border-sky-blue/20 uppercase tracking-[0.2em]">{{ __('Active Stream') }}</span>
                                     @endif
-                                </span>
-                            </td>
-                            <td class="px-10 py-8 text-right">
-                                <button @click="reviewModal = true; selectedBook = { id: {{ $history->book_id }}, title: '{{ addslashes($history->judul) }}' }" class="text-[10px] font-black uppercase tracking-[0.3em] text-sky-blue hover:neon-text transition-all">
-                                    {{ __('Review') }}
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                                </div>
+                                <p class="text-gray-400 dark:text-white/20 text-sm font-light italic mb-6">{{ $loan->penulis }}</p>
+                                
+                                @if($loan->status === 'borrowed')
+                                    @php
+                                        $due = \Carbon\Carbon::parse($loan->tgl_kembali_seharusnya)->startOfDay();
+                                        $now = now()->startOfDay();
+                                        $days = (int) $now->diffInDays($due, false);
+                                    @endphp
+                                    <div class="flex items-center gap-6">
+                                        <div class="flex-grow bg-gray-100 dark:bg-white/5 h-2 rounded-full overflow-hidden">
+                                            <div class="h-full {{ $days < 0 ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : ($days <= 2 ? 'bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.5)]' : 'bg-sky-blue shadow-glow') }}" style="width: {{ max(0, min(100, (7 - $days) / 7 * 100)) }}%"></div>
+                                        </div>
+                                        <span class="text-xs font-black uppercase tracking-widest {{ $days < 0 ? 'text-red-500' : ($days <= 2 ? 'text-amber-500' : 'text-gray-400 dark:text-white/30') }}">
+                                            @if($days < 0)
+                                                {{ __('Overdue') }} {{ abs($days) }}D
+                                            @elseif($days == 0)
+                                                {{ __('Final Day') }}
+                                            @else
+                                                {{ $days }}D {{ __('Remaining') }}
+                                            @endif
+                                        </span>
+                                    </div>
+
+                                    <button @click="reviewModal = true; selectedBook = { id: {{ $loan->book_id }}, title: '{{ addslashes($loan->judul) }}' }" class="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-sky-blue hover:neon-text transition-all">
+                                        {{ __('Write a Review') }}
+                                    </button>
+                                @endif
+                            </div>
+
+                            <div class="text-right">
+                                <span class="text-[10px] text-gray-300 dark:text-white/10 uppercase font-black tracking-[0.3em] block mb-2">{{ __('Return Sync') }}</span>
+                                <span class="text-lg font-black text-gray-400 dark:text-white/40 tracking-tighter">{{ \Carbon\Carbon::parse($loan->tgl_kembali_seharusnya)->format('d.m.Y') }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="py-20 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[3rem] text-center">
+                            <p class="text-gray-400 dark:text-white/10 text-xs font-black uppercase tracking-[0.5em]">{{ __('No active asset streams detected.') }}</p>
+                        </div>
+                    @endforelse
+                </div>
+            </section>
+
+            <!-- Saved to Wishlist -->
+            <section>
+                <h3 class="text-2xl font-black tracking-tighter mb-10 text-dark-navy dark:text-white">{{ __('Saved to Wishlist') }}</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                    @forelse($wishlist as $item)
+                        <div class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[2.5rem] p-6 group hover:translate-y-[-8px] transition-all duration-500">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden mb-6 shadow-lg">
+                                <img src="{{ $item->book->cover_image }}" class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="font-black text-dark-navy dark:text-white tracking-tight line-clamp-1">{{ $item->book->judul }}</h4>
+                            <p class="text-xs text-gray-400 dark:text-white/20 italic mb-6">{{ $item->book->penulis }}</p>
+                            
+                            <div class="flex items-center justify-between gap-4">
+                                <a href="{{ route('catalog') }}?search={{ urlencode($item->book->judul) }}" class="flex-grow py-3 bg-sky-blue text-dark-navy text-[8px] font-black rounded-xl text-center uppercase tracking-widest hover:shadow-glow transition-all">
+                                    {{ __('View in Catalog') }}
+                                </a>
+                                <form action="{{ route('wishlist.toggle', $item->book_id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col-span-full py-20 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[3rem] text-center">
+                            <p class="text-gray-400 dark:text-white/10 text-xs font-black uppercase tracking-[0.5em]">{{ __('No saved assets in your wishlist.') }}</p>
+                        </div>
+                    @endforelse
+                </div>
+            </section>
+
+            <!-- Archive Logs -->
+            <section>
+                <h3 class="text-2xl font-black tracking-tighter mb-10 text-dark-navy dark:text-white">{{ __('Archive Logs') }}</h3>
+                <div class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[3rem] overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100/50 dark:bg-white/5">
+                                    <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20 whitespace-nowrap">{{ __('Resource') }}</th>
+                                    <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20 whitespace-nowrap">{{ __('Closed On') }}</th>
+                                    <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20 whitespace-nowrap">{{ __('Adjustment') }}</th>
+                                    <th class="px-10 py-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 dark:text-white/20 whitespace-nowrap text-right">{{ __('Action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                                @foreach($loans->where('status', 'returned') as $history)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-white/2 transition-colors">
+                                    <td class="px-10 py-8 min-w-[300px]">
+                                        <div class="flex items-center gap-6">
+                                            <div class="w-16 h-20 bg-gray-100 dark:bg-white/5 rounded-xl overflow-hidden flex-shrink-0 shadow-sm">
+                                                <img src="{{ $history->cover_image }}" class="w-full h-full object-cover">
+                                            </div>
+                                            <div>
+                                                <p class="font-black text-lg tracking-tight text-dark-navy dark:text-white">{{ $history->judul }}</p>
+                                                <span class="text-[10px] text-gray-400 dark:text-white/20 italic">{{ $history->penulis }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-10 py-8 text-sm text-gray-400 dark:text-white/40 font-mono whitespace-nowrap">
+                                        {{ \Carbon\Carbon::parse($history->tgl_pengembalian_aktual)->format('d.m.Y') }}
+                                    </td>
+                                    <td class="px-10 py-8 whitespace-nowrap">
+                                        <span class="text-sm font-black {{ $history->denda > 0 ? 'text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.2)]' : 'text-emerald-500 dark:text-emerald-400' }}">
+                                            @if($history->denda > 0)
+                                                +Rp{{ number_format($history->denda, 0, ',', '.') }}
+                                            @else
+                                                {{ __('SUCCESS') }}
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td class="px-10 py-8 text-right whitespace-nowrap">
+                                        <button @click="reviewModal = true; selectedBook = { id: {{ $history->book_id }}, title: '{{ addslashes($history->judul) }}' }" class="text-[10px] font-black uppercase tracking-[0.3em] text-sky-blue hover:neon-text transition-all">
+                                            {{ __('Review') }}
+                                        </button>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
             <!-- Review Modal -->
             <template x-if="reviewModal">

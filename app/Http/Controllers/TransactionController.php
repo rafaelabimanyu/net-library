@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Wishlist;
 
 class TransactionController extends Controller
 {
@@ -87,11 +88,19 @@ class TransactionController extends Controller
     public function myBooks()
     {
         $user = Auth::user();
+        
+        // Active & Returned Loans
         $loans = DB::table('transactions')
             ->join('books', 'transactions.book_id', '=', 'books.id')
             ->select('transactions.*', 'books.judul', 'books.penulis', 'books.cover_image', 'books.kategori')
             ->where('transactions.user_id', $user->id)
             ->orderBy('transactions.created_at', 'desc')
+            ->get();
+
+        // Wishlisted Books
+        $wishlist = Wishlist::with('book')
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $stats = [
@@ -100,7 +109,7 @@ class TransactionController extends Controller
             'history' => $loans->where('status', 'returned')->count(),
         ];
 
-        return view('user.my-books', compact('loans', 'stats'));
+        return view('user.my-books', compact('loans', 'wishlist', 'stats'));
     }
 
     public function exportReport()
