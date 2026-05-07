@@ -1,9 +1,9 @@
-@extends('layouts.dashboard')
+@extends(Auth::user()->role === 'pengunjung' ? 'layouts.app' : 'layouts.dashboard')
 
 @section('title', __('Help Center'))
 
 @section('content')
-<div class="max-w-4xl mx-auto">
+<div class="{{ Auth::user()->role === 'pengunjung' ? 'max-w-4xl mx-auto px-10 py-12' : 'max-w-4xl mx-auto' }}">
     <header class="mb-16">
         <h2 class="text-4xl font-black tracking-tighter mb-4 text-slate-800 dark:text-white">{{ __('User Guide') }}</h2>
         <p class="text-slate-400 dark:text-white/30 font-light italic">

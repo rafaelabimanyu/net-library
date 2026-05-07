@@ -89,13 +89,17 @@ class TransactionController extends Controller
     {
         $user = Auth::user();
         
-        // Active & Returned Loans
-        $loans = DB::table('transactions')
+        // Fetch all user transactions with book details
+        $allTransactions = DB::table('transactions')
             ->join('books', 'transactions.book_id', '=', 'books.id')
             ->select('transactions.*', 'books.judul', 'books.penulis', 'books.cover_image', 'books.kategori')
             ->where('transactions.user_id', $user->id)
             ->orderBy('transactions.created_at', 'desc')
             ->get();
+
+        // Separate Active Streams (Pending/Borrowed) and History (Returned)
+        $loans = $allTransactions->whereIn('status', ['pending', 'borrowed']);
+        $history = $allTransactions->where('status', 'returned');
 
         // Wishlisted Books
         $wishlist = Wishlist::with('book')
@@ -105,11 +109,11 @@ class TransactionController extends Controller
 
         $stats = [
             'borrowed' => $loans->where('status', 'borrowed')->count(),
-            'total_fines' => $loans->sum('denda'),
-            'history' => $loans->where('status', 'returned')->count(),
+            'fines' => $allTransactions->sum('denda'), // Changed from total_fines to fines
+            'history' => $history->count(),
         ];
 
-        return view('user.my-books', compact('loans', 'wishlist', 'stats'));
+        return view('user.my-books', compact('loans', 'history', 'wishlist', 'stats'));
     }
 
     public function exportReport()
