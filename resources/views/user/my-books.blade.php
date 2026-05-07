@@ -1,9 +1,9 @@
-@extends('layouts.dashboard')
+@extends('layouts.app')
 
 @section('title', __('My Assets'))
 
 @section('content')
-<div x-data="{ openModal: false, selectedBook: {} }">
+<div class="max-w-7xl mx-auto px-6 lg:px-10 py-12" x-data="{ openModal: false, selectedBook: {} }">
     <header class="mb-16">
         <h2 class="text-5xl font-black tracking-tighter mb-4 text-slate-800 dark:text-white transition-colors duration-300">{{ __('My Assets') }}</h2>
         <p class="text-slate-500 dark:text-white/30 font-light text-lg">{{ __('Detailed overview of your current loans and historical engagement.') }}</p>
