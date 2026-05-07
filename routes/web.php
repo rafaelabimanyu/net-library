@@ -52,6 +52,9 @@ Route::middleware(['auth'])->group(function () {
     // Wishlist
     Route::post('/wishlist/{book}', [\App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
+    // Help Center / Guide
+    Route::get('/guide', [\App\Http\Controllers\GuideController::class, 'index'])->name('guide.index');
+
 });
 
 Route::get('lang/{locale}', function ($locale) {

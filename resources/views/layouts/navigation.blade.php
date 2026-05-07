@@ -44,6 +44,7 @@ class="fixed top-0 left-0 right-0 z-50 px-10 transition-all duration-500 bg-tran
                     <x-nav-link href="{{ route('catalog') }}" :active="request()->routeIs('catalog')">{{ __('Catalog') }}</x-nav-link>
                     <x-nav-link href="{{ route('user.my-books') }}" :active="request()->routeIs('user.my-books')">{{ __('My Books') }}</x-nav-link>
                 @endif
+                <x-nav-link href="{{ route('guide.index') }}" :active="request()->routeIs('guide.index')">{{ __('Guide') }}</x-nav-link>
             </div>
 
             <!-- Toggles & Actions -->
