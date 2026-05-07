@@ -1,21 +1,27 @@
 @extends('layouts.app')
 
-@section('title', 'Discover | Net-Library Antigravity')
+@section('title', __('Discover') . ' | Net-Library Antigravity')
 
 @section('content')
     <!-- Hero Section -->
     <section class="pt-20 pb-20 px-10 text-center relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-sky-blue/10 rounded-full blur-[150px] animate-pulse"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-sky-blue/5 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
         <div class="max-w-4xl mx-auto relative z-10">
-            <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.8em] mb-6 block opacity-50 animate-pulse">Neural Knowledge Network</span>
+            <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.8em] mb-6 block opacity-50 animate-pulse">{{ __('Neural Knowledge Network') }}</span>
             <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-12 leading-[0.9] text-dark-navy dark:text-white transition-colors duration-300">
-                {{ __('Temukan') }} <br><span class="text-sky-blue neon-text">{{ __('Buku Favoritmu') }}</span>
+                {{ __('Discover') }} <br><span class="text-sky-blue neon-text">{{ __('Your Favorite Books') }}</span>
             </h1>
             
             <!-- Giant Floating Search -->
             <div class="relative max-w-2xl mx-auto mb-20 group">
                 <div class="absolute inset-0 bg-sky-blue/20 blur-[40px] opacity-0 group-focus-within:opacity-100 transition-all duration-700"></div>
                 <form action="{{ route('catalog') }}" method="GET" class="relative">
-                    <input type="text" name="search" placeholder="Type to explore the void..." 
+                    <input type="text" name="search" placeholder="{{ __('Type to explore the void...') }}" 
                         class="w-full bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-sky-blue/20 dark:border-white/10 rounded-[3rem] px-10 py-8 text-xl font-medium focus:outline-none focus:ring-4 focus:ring-sky-blue/20 transition-all placeholder:text-gray-400 dark:placeholder:text-white/10 text-center text-dark-navy dark:text-white">
                     <button type="submit" class="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-sky-blue rounded-full flex items-center justify-center text-dark-navy hover:scale-110 transition-all shadow-glow">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +57,7 @@
         <div class="max-w-7xl mx-auto px-10 mb-16 flex items-end justify-between">
             <div>
                 <h2 class="text-4xl font-black tracking-tighter mb-2 text-dark-navy dark:text-white transition-colors">{{ __('High-Frequency Categories') }}</h2>
-                <p class="text-gray-400 dark:text-white/20 font-light italic">Most explored domains in the repository.</p>
+                <p class="text-gray-400 dark:text-white/20 font-light italic">{{ __('Most explored domains in the repository.') }}</p>
             </div>
             <a href="{{ route('catalog') }}" class="text-xs font-black uppercase tracking-widest text-sky-blue hover:neon-text transition-all">{{ __('Catalog') }} &rarr;</a>
         </div>
@@ -66,7 +72,7 @@
                         </svg>
                     </div>
                     <h4 class="text-2xl font-black tracking-tighter mb-2 text-dark-navy dark:text-white group-hover:text-dark-navy transition-colors">{{ $cat->kategori }}</h4>
-                    <p class="text-gray-400 dark:text-white/20 text-xs font-bold uppercase tracking-widest group-hover:text-dark-navy/40 transition-colors">{{ $cat->count }} Resources</p>
+                    <p class="text-gray-400 dark:text-white/20 text-xs font-bold uppercase tracking-widest group-hover:text-dark-navy/40 transition-colors">{{ $cat->count }} {{ __('Resources') }}</p>
                 </div>
                 @endforeach
             </div>

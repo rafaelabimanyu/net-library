@@ -1,16 +1,16 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Admin Command Center')
+@section('title', __('Admin Command Center'))
 
 @section('content')
 <header class="flex justify-between items-center mb-16">
     <div>
-        <h2 class="text-4xl font-black tracking-tighter mb-2">Administrator</h2>
-        <p class="text-white/30 font-light italic">System overview and strategic management.</p>
+        <h2 class="text-4xl font-black tracking-tighter mb-2">{{ __('Administrator') }}</h2>
+        <p class="text-white/30 font-light italic">{{ __('System overview and strategic management.') }}</p>
     </div>
     <div class="hidden sm:flex items-center gap-4">
         <div class="px-6 py-3 glass rounded-2xl text-xs font-bold text-white/50 border border-white/5 uppercase tracking-widest">
-            {{ now()->format('l, d M Y') }}
+            {{ now()->isoFormat('dddd, DD MMM YYYY') }}
         </div>
     </div>
 </header>
@@ -18,36 +18,36 @@
 <!-- Stats Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-16">
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500 border-sky-blue/20">
-        <p class="text-sky-blue text-[10px] font-black uppercase tracking-widest mb-6">Strategic Status</p>
+        <p class="text-sky-blue text-[10px] font-black uppercase tracking-widest mb-6">{{ __('Strategic Status') }}</p>
         <div class="flex items-end justify-between">
-            <h3 class="text-3xl font-black">OPTIMAL</h3>
-            <span class="text-[10px] text-white/20 uppercase font-bold mb-1">Online</span>
+            <h3 class="text-3xl font-black">{{ __('OPTIMAL') }}</h3>
+            <span class="text-[10px] text-white/20 uppercase font-bold mb-1">{{ __('Online') }}</span>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Total Assets</p>
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Total Assets') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-4xl font-black">{{ $totalBooks }}</h3>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-black uppercase tracking-widest mb-6">Active Members</p>
+        <p class="text-white/20 text-[10px] font-black uppercase tracking-widest mb-6">{{ __('Active Members') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-4xl font-black">{{ $totalMembers }}</h3>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Daily Loans</p>
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Daily Loans') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-4xl font-black">{{ $loansToday }}</h3>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Total Fines</p>
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Total Fines') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-2xl font-black text-red-400">Rp{{ number_format($totalFines, 0, ',', '.') }}</h3>
         </div>
@@ -58,7 +58,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <div class="lg:col-span-2 glass rounded-[3rem] p-10">
         <div class="flex items-center justify-between mb-10">
-            <h4 class="text-xl font-bold tracking-tight">Circulation Dynamics</h4>
+            <h4 class="text-xl font-bold tracking-tight">{{ __('Circulation Dynamics') }}</h4>
         </div>
         <div class="h-72">
             <canvas id="circulationChart"></canvas>
@@ -66,13 +66,13 @@
     </div>
 
     <div class="glass rounded-[3rem] p-10">
-        <h4 class="text-xl font-bold tracking-tight mb-10 text-sky-blue">Strategic Logs</h4>
+        <h4 class="text-xl font-bold tracking-tight mb-10 text-sky-blue">{{ __('Strategic Logs') }}</h4>
         <div class="space-y-8">
             @foreach($recentTransactions as $tx)
             <div class="flex items-start gap-4">
                 <div class="w-1.5 h-1.5 rounded-full mt-2 {{ $tx->status === 'pending' ? 'bg-amber-400' : ($tx->status === 'borrowed' ? 'bg-sky-blue' : 'bg-emerald-400') }}"></div>
                 <div>
-                    <p class="text-sm text-white/80 font-medium leading-relaxed">{{ $tx->user_name }} requested {{ $tx->book_title }}</p>
+                    <p class="text-sm text-white/80 font-medium leading-relaxed">{{ $tx->user_name }} {{ __('requested') }} {{ $tx->book_title }}</p>
                     <span class="text-[10px] text-white/20 uppercase tracking-widest">{{ \Carbon\Carbon::parse($tx->created_at)->diffForHumans() }}</span>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Catalog | Net-Library Antigravity')
+@section('title', __('Catalog') . ' | Net-Library Antigravity')
 
 @section('content')
     <!-- Toast Notifications -->
@@ -21,9 +21,9 @@
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24">
             <div class="max-w-xl">
                 <h2 class="text-6xl font-black tracking-tighter mb-6 leading-[0.9] text-dark-navy dark:text-white transition-colors duration-300">
-                    Explore <br><span class="text-sky-blue neon-text">Knowledge</span>
+                    {{ __('Explore') }} <br><span class="text-sky-blue neon-text">{{ __('Knowledge') }}</span>
                 </h2>
-                <p class="text-gray-400 dark:text-white/30 font-light text-lg">Access our high-performance repository of physical and digital assets curated for the next generation.</p>
+                <p class="text-gray-400 dark:text-white/30 font-light text-lg">{{ __('Access our high-performance repository of physical and digital assets curated for the next generation.') }}</p>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
@@ -34,13 +34,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
-                    <input type="text" x-model="search" placeholder="Search by title or author..." 
+                    <input type="text" x-model="search" placeholder="{{ __('Search by title or author...') }}" 
                         class="w-full sm:w-96 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[2rem] pl-16 pr-8 py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all placeholder:text-gray-400 dark:placeholder:text-white/10 text-dark-navy dark:text-white font-medium">
                 </div>
 
                 <!-- Category Filter -->
                 <select x-model="category" class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[2rem] px-8 py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 text-gray-500 dark:text-white/50 appearance-none cursor-pointer min-w-[200px] font-bold text-xs uppercase tracking-widest">
-                    <option value="All">All Categories</option>
+                    <option value="All">{{ __('All Categories') }}</option>
                     @foreach($books->pluck('kategori')->unique() as $cat)
                         <option value="{{ $cat }}">{{ $cat }}</option>
                     @endforeach
@@ -68,9 +68,9 @@
                     <!-- Availability Badge -->
                     <div class="absolute top-6 right-6">
                         @if($book->stok_tersedia > 0)
-                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 backdrop-blur-xl">In Stock</span>
+                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border border-emerald-500/20 backdrop-blur-xl">{{ __('In Stock') }}</span>
                         @else
-                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 backdrop-blur-xl">Unavailable</span>
+                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 backdrop-blur-xl">{{ __('Unavailable') }}</span>
                         @endif
                     </div>
                 </div>
@@ -91,7 +91,7 @@
 
                 <div class="mt-auto pt-8 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
                     <div class="flex flex-col">
-                        <span class="text-gray-300 dark:text-white/10 text-[10px] uppercase font-black tracking-widest">Zone</span>
+                        <span class="text-gray-300 dark:text-white/10 text-[10px] uppercase font-black tracking-widest">{{ __('Zone') }}</span>
                         <span class="text-xs font-mono text-gray-400 dark:text-white/40 tracking-widest">{{ $book->rak_lokasi }}</span>
                     </div>
                     
@@ -99,12 +99,12 @@
                         <form action="{{ route('borrow.request', $book->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="bg-sky-blue text-dark-navy px-8 py-3 text-[10px] font-black rounded-2xl shadow-glow hover:scale-110 active:scale-95 transition-all uppercase tracking-widest">
-                                ACCESS
+                                {{ __('ACCESS') }}
                             </button>
                         </form>
                     @else
                         <button disabled class="bg-gray-100 dark:bg-white/5 text-gray-300 dark:text-white/10 px-8 py-3 text-[10px] font-black rounded-2xl cursor-not-allowed uppercase tracking-widest">
-                            LOCKED
+                            {{ __('LOCKED') }}
                         </button>
                     @endif
                 </div>
@@ -139,14 +139,14 @@
                         </div>
 
                         <div class="p-8 bg-sky-blue/5 border border-sky-blue/10 rounded-[2.5rem]">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-sky-blue mb-2 block">System Location</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-sky-blue mb-2 block">{{ __('System Location') }}</span>
                             <p class="text-xl font-black text-dark-navy dark:text-white tracking-widest" x-text="selectedBook.rak_lokasi"></p>
                         </div>
                     </div>
 
                     <!-- Right: Reviews -->
                     <div class="flex-grow">
-                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 dark:text-white/20 mb-10">Neural Impressions</h4>
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-400 dark:text-white/20 mb-10">{{ __('Neural Impressions') }}</h4>
                         
                         <div class="space-y-8">
                             <template x-for="review in selectedBook.reviews">
@@ -177,7 +177,7 @@
 
                             <template x-if="selectedBook.reviews.length === 0">
                                 <div class="py-20 text-center border-2 border-dashed border-gray-100 dark:border-white/5 rounded-[3rem]">
-                                    <p class="text-gray-400 dark:text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">No impressions registered yet.</p>
+                                    <p class="text-gray-400 dark:text-white/20 text-[10px] font-black uppercase tracking-[0.3em]">{{ __('No impressions registered yet.') }}</p>
                                 </div>
                             </template>
                         </div>
@@ -194,7 +194,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
-            <p class="text-gray-400 dark:text-white/20 text-xl font-light tracking-widest uppercase">No assets found in current grid.</p>
+            <p class="text-gray-400 dark:text-white/20 text-xl font-light tracking-widest uppercase">{{ __('No assets found in current grid.') }}</p>
         </div>
     </main>
 @endsection

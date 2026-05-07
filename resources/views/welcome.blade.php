@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Net-Library | The Future of Reading</title>
+    <title>Net-Library | {{ __('The Future of Reading') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -42,8 +42,8 @@
             <span class="text-2xl font-black tracking-tighter">NET-LIB</span>
         </div>
         <div class="flex items-center gap-10">
-            <a href="{{ route('catalog') }}" class="text-sm font-medium text-white/50 hover:text-white transition-colors">Catalog</a>
-            <a href="{{ route('login') }}" class="px-8 py-3 glass rounded-2xl text-sm font-bold hover:bg-white/10 transition-all">Login</a>
+            <a href="{{ route('catalog') }}" class="text-sm font-medium text-white/50 hover:text-white transition-colors">{{ __('Catalog') }}</a>
+            <a href="{{ route('login') }}" class="px-8 py-3 glass rounded-2xl text-sm font-bold hover:bg-white/10 transition-all">{{ __('Login') }}</a>
         </div>
     </nav>
 
@@ -54,20 +54,20 @@
             <div class="absolute inset-0 bg-sky-blue/5 blur-[100px] -z-10 rounded-full scale-150"></div>
             
             <h1 class="text-7xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
-                The Future of <br>
-                <span class="text-sky-blue neon-glow">Digital Reading</span>
+                {{ __('The Future of') }} <br>
+                <span class="text-sky-blue neon-glow">{{ __('Digital Reading') }}</span>
             </h1>
             <p class="text-lg md:text-xl text-white/40 font-light max-w-2xl mx-auto mb-12 tracking-wide leading-relaxed">
-                Experience the next generation of library management. <br>
-                Deeply integrated, beautifully designed, and built for the future.
+                {{ __('Experience the next generation of library management.') }} <br>
+                {{ __('Deeply integrated, beautifully designed, and built for the future.') }}
             </p>
             
             <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <a href="{{ route('catalog') }}" class="px-10 py-5 bg-sky-blue text-dark-navy font-black rounded-3xl shadow-[0_0_30px_rgba(130,200,229,0.4)] hover:scale-105 transition-all">
-                    EXPLORE CATALOG
+                    {{ __('EXPLORE CATALOG') }}
                 </a>
                 <a href="{{ route('login') }}" class="px-10 py-5 glass rounded-3xl font-bold hover:bg-white/10 transition-all">
-                    GET STARTED
+                    {{ __('GET STARTED') }}
                 </a>
             </div>
         </div>
@@ -79,7 +79,7 @@
 
     <!-- Footer -->
     <footer class="py-20 text-center">
-        <span class="text-[10px] text-white/20 uppercase tracking-[0.8em] font-light">Antigravity Experience &bull; Precision Engineering</span>
+        <span class="text-[10px] text-white/20 uppercase tracking-[0.8em] font-light">{{ __('Antigravity Experience') }} &bull; {{ __('Precision Engineering') }}</span>
     </footer>
 
 </body>

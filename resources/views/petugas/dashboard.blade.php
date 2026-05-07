@@ -1,41 +1,41 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Staff Operations')
+@section('title', __('Staff Operations'))
 
 @section('content')
 <header class="flex justify-between items-center mb-16">
     <div>
-        <h2 class="text-4xl font-black tracking-tighter mb-2">Staff Operations</h2>
-        <p class="text-white/30 font-light italic">Managing the flow of knowledge with <span class="text-sky-blue font-medium">Antigravity</span>.</p>
+        <h2 class="text-4xl font-black tracking-tighter mb-2">{{ __('Staff Operations') }}</h2>
+        <p class="text-white/30 font-light italic">{{ __('Managing the flow of knowledge with') }} <span class="text-sky-blue font-medium">Antigravity</span>.</p>
     </div>
 </header>
 
 <!-- Stats Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-16">
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500 border-sky-blue/20">
-        <p class="text-sky-blue text-[10px] font-black uppercase tracking-widest mb-6">Tasks Today</p>
+        <p class="text-sky-blue text-[10px] font-black uppercase tracking-widest mb-6">{{ __('Tasks Today') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black">{{ $pendingApprovalCount }}</h3>
-            <span class="text-[10px] text-white/20 uppercase font-bold mb-1">Awaiting</span>
+            <span class="text-[10px] text-white/20 uppercase font-bold mb-1">{{ __('Awaiting') }}</span>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Daily Loans</p>
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Daily Loans') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black">{{ $loansToday }}</h3>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Active Members</p>
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Active Members') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black">{{ $totalMembers }}</h3>
         </div>
     </div>
 
     <div class="glass card-hover rounded-[2.5rem] p-8 transition-all duration-500">
-        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">Total Books</p>
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Total Books') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black">{{ $totalBooks }}</h3>
         </div>
@@ -45,8 +45,8 @@
 <!-- Recent Requests -->
 <div class="glass rounded-[3rem] p-10">
     <div class="flex items-center justify-between mb-10">
-        <h4 class="text-xl font-bold tracking-tight">Pending Borrow Requests</h4>
-        <a href="{{ route('admin.transactions.index') }}" class="text-xs font-black text-sky-blue hover:neon-text transition-all uppercase tracking-widest">View All</a>
+        <h4 class="text-xl font-bold tracking-tight">{{ __('Pending Borrow Requests') }}</h4>
+        <a href="{{ route('admin.transactions.index') }}" class="text-xs font-black text-sky-blue hover:neon-text transition-all uppercase tracking-widest">{{ __('View All') }}</a>
     </div>
     
     <div class="space-y-6">
@@ -67,12 +67,12 @@
                 <form action="{{ route('admin.transactions.update', $tx->id) }}" method="POST">
                     @csrf
                     <input type="hidden" name="status" value="borrowed">
-                    <button class="px-6 py-2.5 bg-sky-blue text-dark-navy text-[10px] font-black rounded-xl neon-glow hover:scale-105 transition-all uppercase tracking-widest">Approve</button>
+                    <button class="px-6 py-2.5 bg-sky-blue text-dark-navy text-[10px] font-black rounded-xl neon-glow hover:scale-105 transition-all uppercase tracking-widest">{{ __('Approve') }}</button>
                 </form>
             </div>
         </div>
         @empty
-        <div class="py-10 text-center text-white/20 font-light italic">No pending requests at the moment.</div>
+        <div class="py-10 text-center text-white/20 font-light italic">{{ __('No pending requests at the moment.') }}</div>
         @endforelse
     </div>
 </div>
