@@ -1,58 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Net-Library | The Future of Digital Reading
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/assets/images/banner.png" alt="Net-Library Banner" width="100%">
 </p>
 
-## About Laravel
+> **"Where the weight of physical books meets the zero-gravity efficiency of digital management."**
+>
+> **Net-Library** is not just a library system; it's a high-performance neural gateway to knowledge. Built with precision engineering and an uncompromising focus on aesthetics, it redefines how institutions manage assets and how members discover them.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🛡️ Tech Stack
+<p align="left">
+  <img src="https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=for-the-badge&logo=alpine.js" alt="Alpine.js">
+  <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql" alt="MySQL">
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 💎 Enterprise Features Highlight
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+*   ✨ **Deep Glassmorphism UI**: A stunning "Antigravity" design system featuring frosted glass effects, neon glows, and seamless responsive transitions.
+*   🌓 **Dual-Theme Engine**: State-of-the-art Dark and Light modes that respect user preferences and system settings with zero-flash transitions.
+*   🌐 **Global Localization**: Fully localized in **Indonesian (ID)** and **English (EN)**. A scalable translation architecture using Laravel's core localization system.
+*   🔐 **Strict RBAC Security**: Role-Based Access Control ensuring distinct operational silos for Admins, Staff, and Members with layout-level separation.
+*   📊 **Advanced Interactions**: Sophisticated user engagement tools: Persistent Wishlists, Neural Reviews (Rating System), and Live Statistics.
+*   ❓ **Dynamic Help Center**: A role-aware help system that provides specific operational protocols based on the authenticated entity's permissions.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🏗️ System Architecture (Roles & Capabilities)
 
-## Agentic Development
+Our neural network is divided into three distinct authority layers, each with a custom-tailored interface:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| Node Role | Access Level | Primary Capabilities |
+| :--- | :--- | :--- |
+| **Admin** | **Command Center** | Full identity management (Nodes), system-wide transaction oversight, strategic reporting, and architectural configuration. |
+| **Petugas** | **Operations** | Real-time circulation validation (Borrow/Return), inventory synchronization, stock adjustment, and repository maintenance. |
+| **Pengunjung** | **Members** | Repository exploration (Catalog), asset borrowing requests, profile synchronization, wishlist persistence, and review transmission. |
 
+---
+
+## 🚀 Installation & Setup Guide
+
+Deploy the Net-Library ecosystem to your local neural network with these standard protocols:
+
+### 1. Initialize Repository
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/your-username/net-library.git
+cd net-library
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Dependency Synchronization
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 3. Environment Configuration
+Create your configuration file and generate the application encryption key:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+> [!IMPORTANT]
+> Ensure your `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` are correctly configured in the `.env` file before proceeding to migrations.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Neural Database Migration
+Populate the system with the initial data set and establish administrative credentials:
+```bash
+php artisan migrate --seed
+```
 
-## Code of Conduct
+### 5. Asset Linking
+Establish the neural link for storage assets (avatars, covers):
+```bash
+php artisan storage:link
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 6. Ignition
+Launch the dual-stream server to start the experience:
+```bash
+# Terminal 1: Backend
+php artisan serve
 
-## Security Vulnerabilities
+# Terminal 2: Frontend (Vite)
+npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<p align="center">
+  <b>Designed with ❤️ by Antigravity</b><br>
+  <i>Net-Library Enterprise v2.0 &bull; Precision Engineered for the Future</i>
+</p>
