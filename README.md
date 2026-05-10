@@ -93,6 +93,6 @@ npm run dev
 ---
 
 <p align="center">
-  <b>Designed with ❤️ by Antigravity</b><br>
+  <b>Designed with love by Antigravity</b><br>
   <i>Net-Library Enterprise v2.0 &bull; Precision Engineered for the Future</i>
 </p>
