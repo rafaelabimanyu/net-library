@@ -6,7 +6,7 @@
 <nav x-data="{ 
     scrolled: false, 
     theme: localStorage.getItem('theme') || 'dark',
-    mobileMenuOpen: false,
+    open: false,
     toggleTheme() {
         this.theme = this.theme === 'dark' ? 'light' : 'dark';
         localStorage.setItem('theme', this.theme);
@@ -32,7 +32,7 @@ class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500
             
             <!-- Menu Items -->
             <div class="flex items-center gap-8">
-                <div class="hidden lg:flex items-center gap-6">
+                <div class="hidden md:flex items-center gap-6">
                     @if($role === 'admin')
                         <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-nav-link>
                         <x-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.index')">{{ __('Users') }}</x-nav-link>
@@ -73,7 +73,7 @@ class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500
 
                     @auth
                     <div class="flex items-center gap-4">
-                        <a href="{{ route('profile.show') }}" class="w-8 h-8 rounded-full border border-sky-blue/30 overflow-hidden hover:shadow-glow transition-all hidden sm:block">
+                        <a href="{{ route('profile.show') }}" class="w-8 h-8 rounded-full border border-sky-blue/30 overflow-hidden hover:shadow-glow transition-all hidden md:block">
                             @if(Auth::user()->avatar)
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="w-full h-full object-cover">
                             @else
@@ -84,20 +84,20 @@ class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500
                                 </div>
                             @endif
                         </a>
-                        <form action="{{ route('logout') }}" method="POST" class="hidden sm:block">
+                        <form action="{{ route('logout') }}" method="POST" class="hidden md:block">
                             @csrf
                             <button type="submit" class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 dark:text-white/20 hover:text-red-400 transition-colors">{{ __('Sign Out') }}</button>
                         </form>
                     </div>
                     @else
-                    <a href="{{ route('login') }}" class="text-[10px] font-black uppercase tracking-[0.2em] text-sky-blue hover:neon-text transition-all hidden sm:block">Login</a>
+                    <a href="{{ route('login') }}" class="text-[10px] font-black uppercase tracking-[0.2em] text-sky-blue hover:neon-text transition-all hidden md:block">Login</a>
                     @endauth
 
                     <!-- Hamburger Button -->
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-sky-blue border border-gray-200 dark:border-white/10 hover:border-sky-blue transition-all">
+                    <button @click="open = !open" class="md:hidden p-2 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-sky-blue border border-gray-200 dark:border-white/10 hover:border-sky-blue transition-all flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -105,7 +105,7 @@ class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500
         </div>
 
         <!-- Mobile Menu Drawer -->
-        <div x-show="mobileMenuOpen" 
+        <div x-show="open" 
              x-cloak 
              x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 -translate-y-4"
@@ -113,7 +113,7 @@ class="fixed top-0 left-0 right-0 z-50 px-6 md:px-10 transition-all duration-500
              x-transition:leave="transition ease-in duration-150"
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-4"
-             class="lg:hidden mt-4 p-6 glass rounded-[2rem] flex flex-col gap-4 shadow-2xl">
+             class="md:hidden mt-4 p-6 backdrop-blur-md bg-zinc-950/90 border border-white/10 rounded-[2rem] flex flex-col gap-4 shadow-2xl">
              
              @if($role === 'admin')
                  <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-nav-link>
