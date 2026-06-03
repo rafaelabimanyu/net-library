@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class BookSeeder extends Seeder
@@ -123,7 +124,9 @@ class BookSeeder extends Seeder
             ],
         ];
 
+        Schema::disableForeignKeyConstraints();
         DB::table('books')->truncate();
+        Schema::enableForeignKeyConstraints();
 
         foreach ($books as $book) {
             DB::table('books')->insert(array_merge($book, [
