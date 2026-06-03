@@ -4,30 +4,30 @@
 
 @section('content')
 
-    <main x-data="{ search: '', category: 'All', detailModal: false, selectedBook: null }" class="max-w-7xl mx-auto px-10 py-10">
+    <main x-data="{ search: '', category: 'All', detailModal: false, selectedBook: null }" class="max-w-7xl mx-auto px-6 md:px-10 py-10">
         <!-- Header & Search -->
-        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-8 md:gap-12 mb-16 md:mb-24">
             <div class="max-w-xl">
-                <h2 class="text-6xl font-black tracking-tighter mb-6 leading-[0.9] text-dark-navy dark:text-white transition-colors duration-300">
+                <h2 class="text-4xl md:text-6xl font-black tracking-tighter mb-4 md:mb-6 leading-tight md:leading-[0.9] text-dark-navy dark:text-white transition-colors duration-300">
                     {{ __('Explore') }} <br><span class="text-sky-blue neon-text">{{ __('Knowledge') }}</span>
                 </h2>
-                <p class="text-gray-400 dark:text-white/30 font-light text-lg">{{ __('Access our high-performance repository of physical and digital assets curated for the next generation.') }}</p>
+                <p class="text-gray-400 dark:text-white/30 font-light text-base md:text-lg leading-relaxed">{{ __('Access our high-performance repository of physical and digital assets curated for the next generation.') }}</p>
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-6 w-full lg:w-auto">
+            <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full lg:w-auto">
                 <!-- Search Bar -->
-                <div class="relative group flex-grow lg:flex-grow-0">
+                <div class="relative group w-full lg:w-auto">
                     <div class="absolute inset-y-0 left-6 flex items-center pointer-events-none text-gray-400 dark:text-white/20 group-focus-within:text-sky-blue transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
                     <input type="text" x-model="search" placeholder="{{ __('Search by title or author...') }}" 
-                        class="w-full sm:w-96 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[2rem] pl-16 pr-8 py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all placeholder:text-gray-400 dark:placeholder:text-white/10 text-dark-navy dark:text-white font-medium">
+                        class="w-full lg:w-96 bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[2rem] pl-16 pr-8 py-4 md:py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all placeholder:text-gray-400 dark:placeholder:text-white/10 text-dark-navy dark:text-white font-medium">
                 </div>
 
                 <!-- Category Filter -->
-                <select x-model="category" class="bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[2rem] px-8 py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 text-gray-500 dark:text-white/50 appearance-none cursor-pointer min-w-[200px] font-bold text-xs uppercase tracking-widest">
+                <select x-model="category" class="w-full lg:w-auto bg-white/40 dark:bg-white/5 backdrop-blur-md border border-sky-blue/20 dark:border-white/10 rounded-[2rem] px-8 py-4 md:py-5 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 text-gray-500 dark:text-white/50 appearance-none cursor-pointer min-w-0 lg:min-w-[200px] font-bold text-xs uppercase tracking-widest">
                     <option value="All">{{ __('All Categories') }}</option>
                     @foreach($books->pluck('kategori')->unique() as $cat)
                         <option value="{{ $cat }}">{{ $cat }}</option>
@@ -37,40 +37,40 @@
         </div>
 
         <!-- Book Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
             @foreach($books as $book)
             <div x-show="(category === 'All' || '{{ $book->kategori }}' === category) && ('{{ strtolower($book->judul) }}'.includes(search.toLowerCase()) || '{{ strtolower($book->penulis) }}'.includes(search.toLowerCase()))"
                  x-transition:enter="transition ease-out duration-500"
                  x-transition:enter-start="opacity-0 scale-90 translate-y-10"
                  x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                 class="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-8 transition-all duration-500 flex flex-col h-full group hover:translate-y-[-8px] hover:border-sky-blue/30 hover:shadow-glow">
+                 class="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-sky-blue/10 dark:border-white/5 rounded-[3rem] p-6 md:p-8 transition-all duration-500 flex flex-col h-full group hover:translate-y-[-8px] hover:border-sky-blue/30 hover:shadow-glow">
                 
                 <!-- Book Cover -->
-                <div @click="detailModal = true; selectedBook = {{ json_encode($book) }}" class="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-white/5 mb-8 overflow-hidden relative transition-all duration-700 cursor-pointer shadow-lg group-hover:shadow-2xl">
+                <div @click="detailModal = true; selectedBook = {{ json_encode($book) }}" class="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-white/5 mb-6 md:mb-8 overflow-hidden relative transition-all duration-700 cursor-pointer shadow-lg group-hover:shadow-2xl">
                     <img src="{{ $book->cover_image }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt="{{ $book->judul }}">
                     <div class="absolute inset-0 bg-gradient-to-t from-dark-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
                     <!-- Wishlist Button -->
-                    <form action="{{ route('wishlist.toggle', $book->id) }}" method="POST" class="absolute top-6 left-6 z-10" @click.stop>
+                    <form action="{{ route('wishlist.toggle', $book->id) }}" method="POST" class="absolute top-4 left-4 md:top-6 md:left-6 z-10" @click.stop>
                         @csrf
-                        <button type="submit" class="p-3 rounded-xl backdrop-blur-xl border border-white/20 transition-all duration-300 {{ $book->is_wishlisted ? 'bg-sky-blue text-dark-navy shadow-glow' : 'bg-white/10 text-white hover:bg-white/20' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" :fill="'{{ $book->is_wishlisted ? 'currentColor' : 'none' }}'" viewBox="0 0 24 24" stroke="currentColor">
+                        <button type="submit" class="p-2.5 md:p-3 rounded-xl backdrop-blur-xl border border-white/20 transition-all duration-300 {{ $book->is_wishlisted ? 'bg-sky-blue text-dark-navy shadow-glow' : 'bg-white/10 text-white hover:bg-white/20' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 md:h-5 md:w-5" :fill="'{{ $book->is_wishlisted ? 'currentColor' : 'none' }}'" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                             </svg>
                         </button>
                     </form>
 
                     <!-- Availability Badge -->
-                    <div class="absolute top-6 right-6">
+                    <div class="absolute top-4 right-4 md:top-6 md:right-6">
                         @if($book->stok_tersedia > 0)
-                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/80 text-white backdrop-blur-xl border border-white/20 shadow-lg">{{ __('In Stock') }}</span>
+                            <span class="px-2.5 py-1.5 md:px-4 md:py-2 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] bg-emerald-500/80 text-white backdrop-blur-xl border border-white/20 shadow-lg">{{ __('In Stock') }}</span>
                         @else
-                            <span class="px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/80 text-white backdrop-blur-xl border border-white/20 shadow-lg">{{ __('Unavailable') }}</span>
+                            <span class="px-2.5 py-1.5 md:px-4 md:py-2 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] bg-red-500/80 text-white backdrop-blur-xl border border-white/20 shadow-lg">{{ __('Unavailable') }}</span>
                         @endif
                     </div>
                 </div>
 
-                <div class="flex-grow mb-8 cursor-pointer" @click="detailModal = true; selectedBook = {{ json_encode($book) }}">
+                <div class="flex-grow mb-6 md:mb-8 cursor-pointer" @click="detailModal = true; selectedBook = {{ json_encode($book) }}">
                     <span class="text-sky-blue text-[10px] font-black uppercase tracking-[0.3em] mb-2 block">{{ $book->kategori }}</span>
                     <div class="flex items-center gap-1 mb-4">
                         @for($i = 1; $i <= 5; $i++)
@@ -80,11 +80,11 @@
                         @endfor
                         <span class="text-[10px] font-bold text-gray-400 dark:text-white/20 ml-2">({{ number_format($book->avg_rating, 1) }})</span>
                     </div>
-                    <h3 class="text-2xl font-black mb-2 line-clamp-2 tracking-tighter leading-[1.1] text-dark-navy dark:text-white group-hover:text-sky-blue transition-colors">{{ $book->judul }}</h3>
+                    <h3 class="text-lg md:text-2xl font-black mb-2 line-clamp-2 tracking-tighter leading-snug md:leading-[1.1] text-dark-navy dark:text-white group-hover:text-sky-blue transition-colors">{{ $book->judul }}</h3>
                     <p class="text-gray-400 dark:text-white/20 text-sm font-light italic">{{ $book->penulis }}</p>
                 </div>
 
-                <div class="mt-auto pt-8 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
+                <div class="mt-auto pt-6 md:pt-8 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
                     <div class="flex flex-col">
                         <span class="text-gray-300 dark:text-white/10 text-[10px] uppercase font-black tracking-widest">{{ __('Zone') }}</span>
                         <span class="text-xs font-mono text-gray-400 dark:text-white/40 tracking-widest">{{ $book->rak_lokasi }}</span>
