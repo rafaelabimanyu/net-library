@@ -63,7 +63,7 @@
                                     </span>
                                 </div>
                                 <div class="h-1 bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden">
-                                    <div class="h-full {{ $days < 0 ? 'bg-red-500 shadow-glow-red' : ($days <= 2 ? 'bg-amber-500 shadow-glow-amber' : 'bg-sky-blue shadow-glow' }}" 
+                                    <div class="h-full {{ $days < 0 ? 'bg-red-500 shadow-glow-red' : ($days <= 2 ? 'bg-amber-500 shadow-glow-amber' : 'bg-sky-blue shadow-glow') }}" 
                                          style="width: {{ max(0, min(100, (7 - $days) / 7 * 100)) }}%"></div>
                                 </div>
                             </div>
