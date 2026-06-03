@@ -12,7 +12,7 @@
 
 <!-- Stats Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-md">
+    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-6 md:p-8 transition-all duration-500 hover:shadow-md">
         <p class="text-sky-blue text-[10px] font-black uppercase tracking-widest mb-6">{{ __('Tasks Today') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black text-slate-800 dark:text-white">{{ $pendingApprovalCount }}</h3>
@@ -20,21 +20,21 @@
         </div>
     </div>
 
-    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-md">
+    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-6 md:p-8 transition-all duration-500 hover:shadow-md">
         <p class="text-slate-400 dark:text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Daily Loans') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black text-slate-800 dark:text-white">{{ $loansToday }}</h3>
         </div>
     </div>
 
-    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-md">
+    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-6 md:p-8 transition-all duration-500 hover:shadow-md">
         <p class="text-slate-400 dark:text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Active Members') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black text-slate-800 dark:text-white">{{ $totalMembers }}</h3>
         </div>
     </div>
 
-    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-8 transition-all duration-500 hover:shadow-md">
+    <div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[2.5rem] p-6 md:p-8 transition-all duration-500 hover:shadow-md">
         <p class="text-slate-400 dark:text-white/20 text-[10px] font-bold uppercase tracking-widest mb-6">{{ __('Total Books') }}</p>
         <div class="flex items-end justify-between">
             <h3 class="text-5xl font-black text-slate-800 dark:text-white">{{ $totalBooks }}</h3>
@@ -43,7 +43,7 @@
 </div>
 
 <!-- Recent Requests -->
-<div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[3rem] p-10">
+<div class="bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 shadow-sm rounded-[3rem] p-6 md:p-10">
     <div class="flex items-center justify-between mb-10">
         <h4 class="text-xl font-bold tracking-tight text-slate-800 dark:text-white">{{ __('Pending Borrow Requests') }}</h4>
         <a href="{{ route('admin.transactions.index') }}" class="text-xs font-black text-sky-blue hover:neon-text transition-all uppercase tracking-widest">{{ __('View All') }}</a>

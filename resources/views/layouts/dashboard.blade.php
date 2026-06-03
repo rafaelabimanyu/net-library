@@ -51,6 +51,8 @@
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0a0c] min-h-screen text-slate-800 dark:text-white font-sans selection:bg-sky-blue/30 overflow-x-hidden transition-colors duration-300">
     
+    @include('components.toast')
+
     <!-- Background Decor -->
     <div class="fixed inset-0 -z-10 pointer-events-none">
         <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-blue/10 dark:bg-sky-blue/5 rounded-full blur-[120px]"></div>

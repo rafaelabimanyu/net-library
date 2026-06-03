@@ -32,7 +32,7 @@
             @forelse($loans as $loan)
                 <div class="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 p-8 rounded-[2.5rem] flex flex-col sm:flex-row gap-8 hover:shadow-md transition-all">
                     <div class="w-full sm:w-32 h-48 rounded-2xl overflow-hidden shadow-lg flex-shrink-0">
-                        <img src="{{ $loan->cover_image }}" class="w-full h-full object-cover">
+                        <img src="{{ Str::startsWith($loan->cover_image, ['http://', 'https://']) ? $loan->cover_image : asset('storage/' . $loan->cover_image) }}" class="w-full h-full object-cover">
                     </div>
                     <div class="flex-grow">
                         <div class="flex justify-between items-start mb-4">
@@ -63,7 +63,7 @@
                                     </span>
                                 </div>
                                 <div class="h-1 bg-slate-200 dark:bg-white/5 rounded-full overflow-hidden">
-                                    <div class="h-full {{ $days < 0 ? 'bg-red-500 shadow-glow-red' : ($days <= 2 ? 'bg-amber-500 shadow-glow-amber' : 'bg-sky-blue shadow-glow') }}" 
+                                    <div class="h-full {{ $days < 0 ? 'bg-red-500 shadow-glow-red' : ($days <= 2 ? 'bg-amber-500 shadow-glow-amber' : 'bg-sky-blue shadow-glow' }}" 
                                          style="width: {{ max(0, min(100, (7 - $days) / 7 * 100)) }}%"></div>
                                 </div>
                             </div>
@@ -134,31 +134,31 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 dark:divide-white/5">
-                        @forelse($history as $history)
+                        @forelse($history as $historyItem)
                         <tr class="hover:bg-slate-50 dark:hover:bg-white/2 transition-colors">
                             <td class="px-10 py-8">
                                 <div class="flex items-center gap-4">
                                     <div class="w-10 h-14 rounded-lg overflow-hidden flex-shrink-0 shadow-sm border border-slate-100 dark:border-white/5">
-                                        <img src="{{ $history->cover_image }}" class="w-full h-full object-cover">
+                                        <img src="{{ Str::startsWith($historyItem->cover_image, ['http://', 'https://']) ? $historyItem->cover_image : asset('storage/' . $historyItem->cover_image) }}" class="w-full h-full object-cover">
                                     </div>
                                     <div>
-                                        <p class="font-black text-lg tracking-tight text-slate-800 dark:text-white">{{ $history->judul }}</p>
-                                        <span class="text-[10px] text-slate-500 dark:text-white/20 italic">{{ $history->penulis }}</span>
+                                        <p class="font-black text-lg tracking-tight text-slate-800 dark:text-white">{{ $historyItem->judul }}</p>
+                                        <span class="text-[10px] text-slate-500 dark:text-white/20 italic">{{ $historyItem->penulis }}</span>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-10 py-8 text-sm text-slate-500 dark:text-white/40 font-mono whitespace-nowrap">
-                                {{ \Carbon\Carbon::parse($history->tgl_kembali)->format('d.m.Y') }}
+                                {{ $historyItem->tgl_pengembalian_aktual ? \Carbon\Carbon::parse($historyItem->tgl_pengembalian_aktual)->format('d.m.Y') : '-' }}
                             </td>
                             <td class="px-10 py-8">
-                                @if($history->denda > 0)
-                                    <span class="text-sm font-black text-red-500 tracking-tight">Rp{{ number_format($history->denda, 0, ',', '.') }}</span>
+                                @if($historyItem->denda > 0)
+                                    <span class="text-sm font-black text-red-500 tracking-tight">Rp{{ number_format($historyItem->denda, 0, ',', '.') }}</span>
                                 @else
                                     <span class="text-[8px] font-black uppercase tracking-widest text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{{ __('SUCCESS') }}</span>
                                 @endif
                             </td>
                             <td class="px-10 py-8 text-right">
-                                <a href="{{ route('catalog') }}?search={{ $history->judul }}" class="text-[10px] font-black text-sky-blue uppercase tracking-widest hover:neon-text transition-all">{{ __('Review') }}</a>
+                                <a href="{{ route('catalog') }}?search={{ $historyItem->judul }}" class="text-[10px] font-black text-sky-blue uppercase tracking-widest hover:neon-text transition-all">{{ __('Review') }}</a>
                             </td>
                         </tr>
                         @empty

@@ -18,7 +18,9 @@ Route::middleware(['auth'])->group(function () {
     // Admin Only (Dewa Access)
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/users', [\App\Http\Controllers\UserController::class, 'index'])->name('admin.users.index');
-        // Other admin only system settings could go here
+        Route::post('/admin/users', [\App\Http\Controllers\UserController::class, 'store'])->name('admin.users.store');
+        Route::put('/admin/users/{id}', [\App\Http\Controllers\UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/admin/users/{id}', [\App\Http\Controllers\UserController::class, 'destroy'])->name('admin.users.destroy');
     });
 
     // Admin & Petugas (Operational & Strategic)
@@ -33,6 +35,9 @@ Route::middleware(['auth'])->group(function () {
         
         // Inventory management (Petugas & Admin)
         Route::get('/admin/books', [\App\Http\Controllers\CatalogController::class, 'adminIndex'])->name('admin.books.index');
+        Route::post('/admin/books', [\App\Http\Controllers\CatalogController::class, 'store'])->name('admin.books.store');
+        Route::put('/admin/books/{id}', [\App\Http\Controllers\CatalogController::class, 'update'])->name('admin.books.update');
+        Route::delete('/admin/books/{id}', [\App\Http\Controllers\CatalogController::class, 'destroy'])->name('admin.books.destroy');
     });
 
     // Visitors & All Authenticated

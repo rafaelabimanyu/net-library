@@ -3,18 +3,6 @@
 @section('title', __('Catalog') . ' | Net-Library Antigravity')
 
 @section('content')
-    <!-- Toast Notifications -->
-    <div class="fixed top-28 right-10 z-[60] space-y-4 pointer-events-none">
-        @if(session('success'))
-            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" 
-                class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-8 py-5 rounded-[2rem] shadow-2xl flex items-center gap-4 pointer-events-auto backdrop-blur-xl">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span class="text-sm font-bold tracking-tight">{{ session('success') }}</span>
-            </div>
-        @endif
-    </div>
 
     <main x-data="{ search: '', category: 'All', detailModal: false, selectedBook: null }" class="max-w-7xl mx-auto px-10 py-10">
         <!-- Header & Search -->

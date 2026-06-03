@@ -47,6 +47,8 @@
 </head>
 <body class="bg-[#f8fafc] dark:bg-[#0a0a0c] text-gray-900 dark:text-gray-100 font-sans min-h-screen transition-colors duration-300 selection:bg-sky-blue/30 overflow-x-hidden">
 
+    @include('components.toast')
+
     <!-- Ambient Glow Background -->
     <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
         <div class="absolute top-[10%] left-[10%] w-[400px] h-[400px] bg-sky-blue/10 dark:bg-sky-blue/5 rounded-full blur-[120px]"></div>

@@ -47,7 +47,7 @@
                 @csrf
                 <div class="space-y-4">
                     <label for="email" class="block text-[10px] font-black text-white/30 uppercase tracking-[0.3em] ml-4">Credential Identity</label>
-                    <input type="email" name="email" id="email" required 
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required 
                         class="w-full bg-white/5 border border-white/10 rounded-[2rem] px-8 py-5 text-white placeholder-white/10 focus:outline-none focus:ring-4 focus:ring-sky-blue/20 focus:border-sky-blue/50 transition-all duration-500 font-medium"
                         placeholder="identity@netlib.com">
                     @error('email')
