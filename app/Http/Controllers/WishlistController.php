@@ -17,16 +17,22 @@ class WishlistController extends Controller
                             ->where('book_id', $book->id)
                             ->first();
 
+        $message = '';
         if ($wishlist) {
             $wishlist->delete();
-            return back()->with('success', __('Removed from wishlist.'));
+            $message = __('Removed from wishlist.');
+        } else {
+            Wishlist::create([
+                'user_id' => $userId,
+                'book_id' => $book->id
+            ]);
+            $message = __('Added to wishlist.');
         }
 
-        Wishlist::create([
-            'user_id' => $userId,
-            'book_id' => $book->id
-        ]);
+        if (request()->isMethod('get')) {
+            return redirect()->route('catalog')->with('success', $message);
+        }
 
-        return back()->with('success', __('Added to wishlist.'));
+        return back()->with('success', $message);
     }
 }

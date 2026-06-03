@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/books/{bookId}/review', [\App\Http\Controllers\BookReviewController::class, 'store'])->name('books.review');
     
     // Wishlist
-    Route::post('/wishlist/{book}', [\App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::match(['get', 'post'], '/wishlist/{book}', [\App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
 
     // Help Center / Guide
     Route::get('/guide', [\App\Http\Controllers\GuideController::class, 'index'])->name('guide.index');
